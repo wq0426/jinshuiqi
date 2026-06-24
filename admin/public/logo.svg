@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="dkqGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3A8EF6"/>
+      <stop offset="1" stop-color="#26C6DA"/>
+    </linearGradient>
+  </defs>
+  <!-- 圆角方形底 -->
+  <rect x="4" y="4" width="92" height="92" rx="24" fill="url(#dkqGrad)"/>
+  <!-- 水滴 -->
+  <path d="M50 20 C50 20 72 44 72 60 a22 22 0 1 1 -44 0 C28 44 50 20 50 20 Z"
+        fill="#ffffff" fill-opacity="0.95"/>
+  <!-- 水滴高光 -->
+  <path d="M42 58 a8 8 0 0 0 8 12" fill="none" stroke="#26C6DA" stroke-width="3.5"
+        stroke-linecap="round" opacity="0.8"/>
+  <!-- 泉字 -->
+  <text x="50" y="63" font-size="26" text-anchor="middle" fill="#3A8EF6"
+        font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-weight="700">泉</text>
+</svg>

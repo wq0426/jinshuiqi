@@ -7,10 +7,10 @@ import { getSettings, saveSettings } from '@/api'
 const activeTab = reactive({ name: 'base' })
 
 const base = reactive({
-  siteName: '净水管家服务平台',
-  logo: '净',
+  siteName: '德康泉管理系统',
+  logo: '泉',
   contact: '400-888-6666',
-  desc: '净水器上门服务、商城、物联网设备管理一体化平台'
+  desc: '德康泉净水上门服务、商城、物联网设备管理一体化平台'
 })
 const iot = reactive({
   baseUrl: 'https://iot.example.com',

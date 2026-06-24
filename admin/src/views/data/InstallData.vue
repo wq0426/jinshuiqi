@@ -162,6 +162,8 @@ const pageSize = 8
 const filteredTable = computed(() => {
   let list = installData.value.table
   if (filter.value.area) list = list.filter((r) => r.area === filter.value.area)
+  const [start, end] = filter.value.dateRange || []
+  if (start && end) list = list.filter((r) => r.date >= start && r.date <= end)
   return list
 })
 const pagedTable = computed(() => {

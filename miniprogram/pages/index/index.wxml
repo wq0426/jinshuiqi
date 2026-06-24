@@ -3,7 +3,7 @@
   <!-- 渐变头图 + 自定义导航 -->
   <view class="header gradient-primary">
     <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
-    <view class="nav-title">净享水站 <text class="nav-sub">让每一滴水更安心</text></view>
+    <view class="nav-title">德康泉 <text class="nav-sub">让每一滴水更安心</text></view>
     <view class="search" bindtap="goSearch">
       <text class="search-icon">🔍</text>
       <text class="search-ph">搜索净水器 / 滤芯 / 服务</text>

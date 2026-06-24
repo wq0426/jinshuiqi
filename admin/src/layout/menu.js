@@ -8,6 +8,7 @@ export const menuConfig = [
       { path: '/data-screen', title: '数据大屏', icon: 'Monitor', blank: true },
       { path: '/data/install', title: '装机数据', icon: 'TrendCharts' },
       { path: '/data/recharge', title: '充值数据', icon: 'Histogram' },
+      { path: '/data/renewal', title: '续费数据', icon: 'RefreshRight' },
       { path: '/data/customer', title: '客户数据', icon: 'PieChart' }
     ]
   },
@@ -17,7 +18,17 @@ export const menuConfig = [
     children: [
       { path: '/mall/products', title: '商品列表', icon: 'Goods' },
       { path: '/mall/category', title: '商品分类', icon: 'Menu' },
-      { path: '/mall/orders', title: '订单管理', icon: 'List' }
+      { path: '/mall/packages', title: '套餐管理', icon: 'Present' },
+      { path: '/mall/orders', title: '订单管理', icon: 'List' },
+      { path: '/mall/payments', title: '支付管理', icon: 'Money' }
+    ]
+  },
+  {
+    title: '营销中心',
+    icon: 'Promotion',
+    children: [
+      { path: '/marketing/ranking', title: '排行榜激励', icon: 'Trophy' },
+      { path: '/marketing/points', title: '积分管理', icon: 'GoldMedal' }
     ]
   },
   {
@@ -25,7 +36,10 @@ export const menuConfig = [
     icon: 'Cpu',
     children: [
       { path: '/device/list', title: '设备列表', icon: 'Monitor' },
-      { path: '/device/models', title: '设备型号', icon: 'SetUp' }
+      { path: '/device/models', title: '设备型号', icon: 'SetUp' },
+      { path: '/device/water', title: '制水记录', icon: 'Histogram' },
+      { path: '/device/faults', title: '故障记录', icon: 'WarnTriangleFilled' },
+      { path: '/device/calibration', title: '设备校准', icon: 'Aim' }
     ]
   },
   {
@@ -34,8 +48,14 @@ export const menuConfig = [
     children: [
       { path: '/workorder/list', title: '工单列表', icon: 'Document' },
       { path: '/workorder/dispatch', title: '派单中心', icon: 'Promotion' },
-      { path: '/workorder/technicians', title: '师傅管理', icon: 'Avatar' }
+      { path: '/workorder/technicians', title: '师傅管理', icon: 'Avatar' },
+      { path: '/workorder/tech-audit', title: '师傅审核', icon: 'CircleCheck' }
     ]
+  },
+  {
+    title: '库存管理',
+    icon: 'Box',
+    children: [{ path: '/inventory/list', title: '库存清单', icon: 'Box' }]
   },
   {
     title: '分销管理',
@@ -43,6 +63,8 @@ export const menuConfig = [
     children: [
       { path: '/distribution/overview', title: '分销概览', icon: 'DataAnalysis' },
       { path: '/distribution/members', title: '分销员', icon: 'UserFilled' },
+      { path: '/distribution/system', title: '分销体系', icon: 'Connection' },
+      { path: '/distribution/region-dividend', title: '区域分红', icon: 'MapLocation' },
       { path: '/distribution/commission', title: '佣金记录', icon: 'Money' },
       { path: '/distribution/withdraw', title: '提现审核', icon: 'Wallet' },
       { path: '/distribution/rules', title: '分润规则', icon: 'SetUp' }
@@ -61,6 +83,7 @@ export const menuConfig = [
       { path: '/recharge/records', title: '充值记录', icon: 'Tickets' }
     ]
   },
+  { path: '/service/online', title: '在线客服', icon: 'ChatDotRound' },
   { path: '/page-builder', title: '页面装修', icon: 'Brush' },
   {
     title: '预警管理',
@@ -73,6 +96,13 @@ export const menuConfig = [
   {
     title: '系统设置',
     icon: 'Setting',
-    children: [{ path: '/system/settings', title: '系统设置', icon: 'Tools' }]
+    children: [
+      { path: '/system/settings', title: '基础设置', icon: 'Tools' },
+      { path: '/system/accounts', title: '账号设置', icon: 'User' },
+      { path: '/system/roles', title: '角色权限', icon: 'Key' },
+      { path: '/system/op-logs', title: '操作日志', icon: 'Document' },
+      { path: '/system/notices', title: '消息通知', icon: 'Bell' },
+      { path: '/system/templates', title: '消息模板', icon: 'ChatLineSquare' }
+    ]
   }
 ]

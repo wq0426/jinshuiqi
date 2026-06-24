@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
@@ -108,4 +109,78 @@ export class AdminController {
   @Put('page-config') savePageConfig(@Body() b: any) { return this.svc.savePageConfig(b); }
   @Get('settings') settings() { return this.svc.settings(); }
   @Put('settings') saveSettings(@Body() b: any) { return this.svc.saveSettings(b); }
+
+  // ---------- 排行榜激励 ----------
+  @Get('rankings') rankings(@Query('board') board: string, @Query('scope') scope: string, @Query('period') period: string) {
+    return this.svc.rankings(board || 'sales', scope || 'personal', period || 'month');
+  }
+
+  // ---------- 营销-积分 ----------
+  @Get('point-rules') listPointRules() { return this.svc.listPointRules(); }
+  @Post('point-rules') createPointRule(@Body() b: any) { return this.svc.createPointRule(b); }
+  @Put('point-rules/:id') updatePointRule(@Param('id') id: string, @Body() b: any) { return this.svc.updatePointRule(+id, b); }
+  @Delete('point-rules/:id') deletePointRule(@Param('id') id: string) { return this.svc.deletePointRule(+id); }
+  @Get('point-records') listPointRecords() { return this.svc.listPointRecords(); }
+
+  // ---------- 库存管理 ----------
+  @Get('inventory') listInventory() { return this.svc.listInventory(); }
+  @Post('inventory') createInventory(@Body() b: any) { return this.svc.createInventory(b); }
+  @Put('inventory/:id') updateInventory(@Param('id') id: string, @Body() b: any) { return this.svc.updateInventory(+id, b); }
+  @Delete('inventory/:id') deleteInventory(@Param('id') id: string) { return this.svc.deleteInventory(+id); }
+  @Get('stock-logs') listStockLogs() { return this.svc.listStockLogs(); }
+  @Post('stock-inout') stockInOut(@Body() b: any) { return this.svc.stockInOut(b); }
+
+  // ---------- 系统：角色 / 账号 / 操作日志 / 站内消息 ----------
+  @Get('roles') listRoles() { return this.svc.listRoles(); }
+  @Post('roles') createRole(@Body() b: any) { return this.svc.createRole(b); }
+  @Put('roles/:id') updateRole(@Param('id') id: string, @Body() b: any) { return this.svc.updateRole(+id, b); }
+  @Delete('roles/:id') deleteRole(@Param('id') id: string) { return this.svc.deleteRole(+id); }
+  @Get('accounts') listAccounts() { return this.svc.listAccounts(); }
+  @Post('accounts') createAccount(@Body() b: any) { return this.svc.createAccount(b); }
+  @Put('accounts/:id') updateAccount(@Param('id') id: string, @Body() b: any) { return this.svc.updateAccount(id, b); }
+  @Delete('accounts/:id') deleteAccount(@Param('id') id: string) { return this.svc.deleteAccount(id); }
+  @Get('op-logs') listOpLogs() { return this.svc.listOpLogs(); }
+  @Get('notices') listNotices() { return this.svc.listNotices(); }
+  @Post('notices/:id/read') readNotice(@Param('id') id: string) { return this.svc.readNotice(id); }
+
+  // ---------- 消息通知模板 ----------
+  @Get('msg-templates') listMsgTemplates() { return this.svc.listMsgTemplates(); }
+  @Post('msg-templates') createMsgTemplate(@Body() b: any) { return this.svc.createMsgTemplate(b); }
+  @Put('msg-templates/:id') updateMsgTemplate(@Param('id') id: string, @Body() b: any) { return this.svc.updateMsgTemplate(+id, b); }
+  @Delete('msg-templates/:id') deleteMsgTemplate(@Param('id') id: string) { return this.svc.deleteMsgTemplate(+id); }
+
+  // ---------- 师傅审核 ----------
+  @Get('tech-applies') listTechApplies() { return this.svc.listTechApplies(); }
+  @Post('tech-applies/:id/audit') auditTechApply(@Param('id') id: string, @Body() b: { status: string; remark?: string }) { return this.svc.auditTechApply(id, b.status, b.remark); }
+
+  // ---------- 设备：故障 / 校准 / 制水记录 ----------
+  @Get('device-faults') listDeviceFaults() { return this.svc.listDeviceFaults(); }
+  @Post('device-faults/:id/handle') handleDeviceFault(@Param('id') id: string, @Body() b: { status: string }) { return this.svc.handleDeviceFault(id, b.status); }
+  @Get('device-calibrations') listDeviceCalibrations() { return this.svc.listDeviceCalibrations(); }
+  @Get('water-records') listWaterRecords() { return this.svc.listWaterRecords(); }
+
+  // ---------- 在线客服 ----------
+  @Get('chat-sessions') listChatSessions() { return this.svc.listChatSessions(); }
+  @Get('chat-sessions/:id') getChatSession(@Param('id') id: string) { return this.svc.getChatSession(id); }
+  @Post('chat-sessions/:id/reply') replyChat(@Param('id') id: string, @Body() b: { text: string }) { return this.svc.replyChat(id, b.text); }
+  @Post('chat-sessions/:id/close') closeChat(@Param('id') id: string) { return this.svc.closeChat(id); }
+
+  // ---------- 支付管理 ----------
+  @Get('payment-records') listPaymentRecords() { return this.svc.listPaymentRecords(); }
+  @Post('payment-records/:id/refund') refundPayment(@Param('id') id: string) { return this.svc.refundPayment(id); }
+
+  // ---------- 商品套餐 ----------
+  @Get('packages') listPackages() { return this.svc.listPackages(); }
+  @Post('packages') createPackage(@Body() b: any) { return this.svc.createPackage(b); }
+  @Put('packages/:id') updatePackage(@Param('id') id: string, @Body() b: any) { return this.svc.updatePackage(+id, b); }
+  @Delete('packages/:id') deletePackage(@Param('id') id: string) { return this.svc.deletePackage(+id); }
+
+  // ---------- 分销体系 / 区域分红 ----------
+  @Get('dist-system') distSystem() { return this.svc.distSystem(); }
+  @Put('dist-system') saveDistSystem(@Body() b: any) { return this.svc.saveDistSystem(b); }
+  @Get('region-dividends') listRegionDividends() { return this.svc.listRegionDividends(); }
+  @Put('region-dividends/:id') updateRegionDividend(@Param('id') id: string, @Body() b: any) { return this.svc.updateRegionDividend(id, b); }
+
+  // ---------- 续费统计 ----------
+  @Get('data/renewal') renewalData() { return this.svc.renewalData(); }
 }

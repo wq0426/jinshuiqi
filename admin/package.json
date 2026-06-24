@@ -1,7 +1,7 @@
 {
   "name": "jinshuiqi-admin",
   "version": "1.0.0",
-  "description": "净水器上门服务平台 - 管理后台",
+  "description": "德康泉管理系统 - 净水上门服务平台管理后台",
   "private": true,
   "type": "module",
   "scripts": {

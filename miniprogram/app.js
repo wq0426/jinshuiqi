@@ -2,7 +2,9 @@
 App({
   globalData: {
     // 购物车数据（全局共享，含数量与勾选状态，属于本地会话态）
-    cart: []
+    cart: [],
+    // 订单中心待激活的子标签（switchTab 无法带参数，用全局态传递）
+    orderTab: -1
   },
 
   onLaunch() {

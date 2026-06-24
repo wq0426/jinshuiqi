@@ -7,6 +7,7 @@ Component({
       { pagePath: '/pages/index/index', text: '首页', icon: '🏠' },
       { pagePath: '/pages/mall/mall', text: '商城', icon: '🛒' },
       { pagePath: '/pages/service/service', text: '服务', icon: '🧰', center: true },
+      { pagePath: '/pages/order/list', text: '订单', icon: '📋' },
       { pagePath: '/pages/my/my', text: '我的', icon: '👤' }
     ]
   },

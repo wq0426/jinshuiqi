@@ -3,8 +3,8 @@
     <!-- 左侧品牌渐变插画区（纯 CSS 绘制） -->
     <div class="brand">
       <div class="brand-inner">
-        <div class="brand-logo">💧 净水智服</div>
-        <h1 class="brand-title">净水器上门服务平台</h1>
+        <div class="brand-logo"><img src="/logo.svg" alt="德康泉" class="brand-logo-img" /> 德康泉</div>
+        <h1 class="brand-title">德康泉净水上门服务平台</h1>
         <p class="brand-sub">IoT 设备物联 · 智能工单调度 · 链动分销 · 数据大屏</p>
         <!-- CSS 绘制的装饰图形 -->
         <div class="illustration">
@@ -27,7 +27,7 @@
     <div class="form-area">
       <div class="login-card">
         <h2 class="login-title">欢迎登录</h2>
-        <p class="login-tip">净水器上门服务 · 管理后台</p>
+        <p class="login-tip">德康泉 · 管理后台</p>
         <el-form :model="form" :rules="rules" ref="formRef" size="large">
           <el-form-item prop="username">
             <el-input v-model="form.username" placeholder="请输入账号" :prefix-icon="User" />
@@ -52,7 +52,7 @@
           <p class="login-hint">提示：任意账号密码均可登录（演示）</p>
         </el-form>
       </div>
-      <div class="copyright">© 2026 净水智服 JinShuiQi · Powered by Vue3 + Element Plus</div>
+      <div class="copyright">© 2026 德康泉管理系统 · Powered by Vue3 + Element Plus</div>
     </div>
   </div>
 </template>
@@ -120,6 +120,14 @@ function onLogin() {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-logo-img {
+  width: 44px;
+  height: 44px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
 }
 .brand-title {
   font-size: 40px;

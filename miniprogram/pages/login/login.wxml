@@ -1,9 +1,9 @@
 <!-- 登录 -->
 <view class="page gradient-primary">
   <view class="logo-wrap">
-    <view class="logo">净</view>
-    <view class="app-name">净水管家</view>
-    <view class="app-desc">净水器上门服务 · 商城 · 设备管理</view>
+    <view class="logo">泉</view>
+    <view class="app-name">德康泉</view>
+    <view class="app-desc">净水上门服务 · 商城 · 设备管理</view>
   </view>
 
   <view class="login-box">

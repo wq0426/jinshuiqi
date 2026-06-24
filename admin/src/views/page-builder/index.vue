@@ -22,7 +22,7 @@ function defaultProps(type) {
     case 'banner': return { images: ['蓝色海报', '青色海报', '橙色海报'], height: 150 }
     case 'nav': return { cols: 4, items: ['商城', '装机预约', '我的设备', '分销中心', '充值', '维修', '水质检测', '全部'] }
     case 'goods': return { title: '推荐商品', cols: 2, count: 4 }
-    case 'notice': return { text: '欢迎使用净水管家，新装机用户立享 8 折优惠！' }
+    case 'notice': return { text: '欢迎使用德康泉，新装机用户立享 8 折优惠！' }
     case 'image': return { text: '图文广告位', height: 120 }
     case 'coupon': return { count: 3 }
     case 'service': return { items: ['装机', '拆机', '迁机', '维修'] }
@@ -42,7 +42,7 @@ const selectedId = ref(canvas.value[0].id)
 const selected = computed(() => canvas.value.find((c) => c.id === selectedId.value))
 
 // 页面全局设置
-const pageConfig = ref({ title: '净水管家首页', bgColor: '#f5f7fa' })
+const pageConfig = ref({ title: '德康泉首页', bgColor: '#f5f7fa' })
 
 // 加载已保存的装修配置
 onMounted(async () => {
@@ -112,7 +112,7 @@ function reset() {
       </div>
       <div class="phone">
         <div class="phone-notch"></div>
-        <div class="phone-status">9:41　净水管家</div>
+        <div class="phone-status">9:41　德康泉</div>
         <div class="phone-screen" :style="{ background: pageConfig.bgColor }">
           <div v-if="!canvas.length" class="empty">从左侧添加组件开始装修</div>
 

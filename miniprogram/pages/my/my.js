@@ -23,7 +23,7 @@ Page({
 
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 3, cartCount: getApp().getCartCount() });
+      this.getTabBar().setData({ selected: 4, cartCount: getApp().getCartCount() });
     }
     // 「我的」是个人页：未登录则跳转登录，不加载任何个人数据
     if (!auth.requireLogin()) return;
@@ -57,10 +57,18 @@ Page({
 
   onGrid(e) {
     const { url, tab } = e.currentTarget.dataset;
+    // 订单中心已是 tabBar 页，需用 switchTab 跳转
+    if (url === '/pages/order/list') {
+      getApp().globalData.orderTab = -1;
+      wx.switchTab({ url });
+      return;
+    }
     util.navTo(url, tab);
   },
 
   goOrder(e) {
-    wx.navigateTo({ url: '/pages/order/list?tab=' + e.currentTarget.dataset.id });
+    // 订单中心是 tabBar 页：switchTab 不支持带参，用全局态传递目标子标签
+    getApp().globalData.orderTab = Number(e.currentTarget.dataset.id);
+    wx.switchTab({ url: '/pages/order/list' });
   }
 });

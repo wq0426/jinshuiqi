@@ -22,7 +22,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#3A8EF6",
-    "navigationBarTitleText": "净享水站",
+    "navigationBarTitleText": "德康泉",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#f5f7fa"
   },
@@ -43,6 +43,10 @@
       {
         "pagePath": "pages/service/service",
         "text": "服务"
+      },
+      {
+        "pagePath": "pages/order/list",
+        "text": "订单"
       },
       {
         "pagePath": "pages/my/my",

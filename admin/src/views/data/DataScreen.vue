@@ -3,7 +3,7 @@
     <!-- 顶部标题栏 -->
     <header class="screen-header">
       <div class="header-deco left"></div>
-      <h1 class="screen-title">净水智服 · 数据可视化大屏</h1>
+      <h1 class="screen-title">德康泉 · 数据可视化大屏</h1>
       <div class="header-deco right"></div>
       <div class="header-time">{{ nowText }}</div>
       <el-button class="back-btn" size="small" round @click="goBack">

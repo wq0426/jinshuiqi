@@ -193,7 +193,26 @@ const routes = [
         name: 'SystemSettings',
         component: () => import('@/views/system/Settings.vue'),
         meta: { title: '系统设置', icon: 'Setting' }
-      }
+      },
+      // ===== 补齐脑图功能的新增路由 =====
+      { path: 'data/renewal', name: 'DataRenewal', component: () => import('@/views/data/RenewalData.vue'), meta: { title: '续费数据' } },
+      { path: 'mall/packages', name: 'MallPackages', component: () => import('@/views/mall/Packages.vue'), meta: { title: '套餐管理' } },
+      { path: 'mall/payments', name: 'MallPayments', component: () => import('@/views/mall/Payments.vue'), meta: { title: '支付管理' } },
+      { path: 'marketing/ranking', name: 'MarketingRanking', component: () => import('@/views/marketing/Ranking.vue'), meta: { title: '排行榜激励' } },
+      { path: 'marketing/points', name: 'MarketingPoints', component: () => import('@/views/marketing/Points.vue'), meta: { title: '积分管理' } },
+      { path: 'device/water', name: 'DeviceWater', component: () => import('@/views/device/WaterRecords.vue'), meta: { title: '制水记录' } },
+      { path: 'device/faults', name: 'DeviceFaults', component: () => import('@/views/device/DeviceFaults.vue'), meta: { title: '故障记录' } },
+      { path: 'device/calibration', name: 'DeviceCalibration', component: () => import('@/views/device/DeviceCalibration.vue'), meta: { title: '设备校准' } },
+      { path: 'workorder/tech-audit', name: 'TechAudit', component: () => import('@/views/workorder/TechAudit.vue'), meta: { title: '师傅审核' } },
+      { path: 'inventory/list', name: 'InventoryList', component: () => import('@/views/inventory/InventoryList.vue'), meta: { title: '库存清单' } },
+      { path: 'distribution/system', name: 'DistSystem', component: () => import('@/views/distribution/System.vue'), meta: { title: '分销体系' } },
+      { path: 'distribution/region-dividend', name: 'RegionDividend', component: () => import('@/views/distribution/RegionDividend.vue'), meta: { title: '区域分红' } },
+      { path: 'service/online', name: 'OnlineService', component: () => import('@/views/service/OnlineService.vue'), meta: { title: '在线客服' } },
+      { path: 'system/accounts', name: 'SystemAccounts', component: () => import('@/views/system/Accounts.vue'), meta: { title: '账号设置' } },
+      { path: 'system/roles', name: 'SystemRoles', component: () => import('@/views/system/Roles.vue'), meta: { title: '角色权限' } },
+      { path: 'system/op-logs', name: 'SystemOpLogs', component: () => import('@/views/system/OpLogs.vue'), meta: { title: '操作日志' } },
+      { path: 'system/notices', name: 'SystemNotices', component: () => import('@/views/system/Notices.vue'), meta: { title: '消息通知' } },
+      { path: 'system/templates', name: 'SystemTemplates', component: () => import('@/views/system/MsgTemplates.vue'), meta: { title: '消息模板' } }
     ]
   },
   { path: '/:pathMatch(.*)*', redirect: '/dashboard' }

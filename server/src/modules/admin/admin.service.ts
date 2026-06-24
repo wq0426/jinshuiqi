@@ -8,20 +8,38 @@ import { Repository } from 'typeorm';
 import { signToken } from '../../common/token.util';
 import { Metric } from '../../entities/metric.entity';
 import {
+  AdminAccount,
   AdminAlert,
   AdminAlertRule,
   AdminCategory,
+  AdminChatSession,
   AdminCommission,
   AdminCustomer,
   AdminDevice,
+  AdminDeviceCalibration,
+  AdminDeviceFault,
   AdminDeviceModel,
   AdminDistRule,
   AdminDistributor,
+  AdminInventory,
+  AdminMsgTemplate,
+  AdminNotice,
+  AdminOpLog,
   AdminOrder,
+  AdminPackage,
+  AdminPaymentRecord,
+  AdminPointRecord,
+  AdminPointRule,
   AdminProduct,
+  AdminRanking,
   AdminRechargePackage,
   AdminRechargeRecord,
+  AdminRegionDividend,
+  AdminRole,
+  AdminStockLog,
+  AdminTechApply,
   AdminTechnician,
+  AdminWaterRecord,
   AdminWithdrawal,
   AdminWorkorder,
 } from '../../entities/admin.entities';
@@ -46,6 +64,24 @@ export class AdminService {
     @InjectRepository(AdminRechargeRecord) private rechargeRecordRepo: Repository<AdminRechargeRecord>,
     @InjectRepository(AdminAlert) private alertRepo: Repository<AdminAlert>,
     @InjectRepository(AdminAlertRule) private alertRuleRepo: Repository<AdminAlertRule>,
+    @InjectRepository(AdminRanking) private rankingRepo: Repository<AdminRanking>,
+    @InjectRepository(AdminPointRule) private pointRuleRepo: Repository<AdminPointRule>,
+    @InjectRepository(AdminPointRecord) private pointRecordRepo: Repository<AdminPointRecord>,
+    @InjectRepository(AdminInventory) private inventoryRepo: Repository<AdminInventory>,
+    @InjectRepository(AdminStockLog) private stockLogRepo: Repository<AdminStockLog>,
+    @InjectRepository(AdminRole) private roleRepo: Repository<AdminRole>,
+    @InjectRepository(AdminAccount) private accountRepo: Repository<AdminAccount>,
+    @InjectRepository(AdminOpLog) private opLogRepo: Repository<AdminOpLog>,
+    @InjectRepository(AdminNotice) private noticeRepo: Repository<AdminNotice>,
+    @InjectRepository(AdminMsgTemplate) private msgTemplateRepo: Repository<AdminMsgTemplate>,
+    @InjectRepository(AdminTechApply) private techApplyRepo: Repository<AdminTechApply>,
+    @InjectRepository(AdminDeviceFault) private deviceFaultRepo: Repository<AdminDeviceFault>,
+    @InjectRepository(AdminDeviceCalibration) private deviceCalibrationRepo: Repository<AdminDeviceCalibration>,
+    @InjectRepository(AdminWaterRecord) private waterRecordRepo: Repository<AdminWaterRecord>,
+    @InjectRepository(AdminChatSession) private chatSessionRepo: Repository<AdminChatSession>,
+    @InjectRepository(AdminPaymentRecord) private paymentRecordRepo: Repository<AdminPaymentRecord>,
+    @InjectRepository(AdminPackage) private packageRepo: Repository<AdminPackage>,
+    @InjectRepository(AdminRegionDividend) private regionDividendRepo: Repository<AdminRegionDividend>,
   ) {}
 
   // ---------- metric helpers ----------
@@ -326,4 +362,215 @@ export class AdminService {
     });
   }
   saveSettings(body: any) { return this.setMetric('system.settings', body); }
+
+  // ---------- 排行榜激励 ----------
+  rankings(board = 'sales', scope = 'personal', period = 'month') {
+    return this.rankingRepo.find({ where: { board, scope, period }, order: { rank: 'ASC' } });
+  }
+
+  // ---------- 营销-积分 ----------
+  listPointRules() { return this.pointRuleRepo.find({ order: { id: 'ASC' } }); }
+  async createPointRule(body: Partial<AdminPointRule>) {
+    const entity = this.pointRuleRepo.create({ enabled: true, points: 0, desc: '', ...body, id: undefined });
+    return this.pointRuleRepo.save(entity);
+  }
+  async updatePointRule(id: number, body: Partial<AdminPointRule>) {
+    const entity = await this.pointRuleRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('积分规则不存在');
+    Object.assign(entity, body, { id });
+    return this.pointRuleRepo.save(entity);
+  }
+  async deletePointRule(id: number) { await this.pointRuleRepo.delete(id); return null; }
+  listPointRecords() { return this.pointRecordRepo.find({ order: { time: 'DESC' } }); }
+
+  // ---------- 库存管理 ----------
+  listInventory() { return this.inventoryRepo.find({ order: { id: 'ASC' } }); }
+  async createInventory(body: Partial<AdminInventory>) {
+    const entity = this.inventoryRepo.create({
+      stock: 0, warnLine: 0, unit: '件', location: '', category: '',
+      updateTime: new Date().toISOString().slice(0, 16).replace('T', ' '),
+      ...body, id: undefined,
+    });
+    return this.inventoryRepo.save(entity);
+  }
+  async updateInventory(id: number, body: Partial<AdminInventory>) {
+    const entity = await this.inventoryRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('库存不存在');
+    Object.assign(entity, body, { id, updateTime: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+    return this.inventoryRepo.save(entity);
+  }
+  async deleteInventory(id: number) { await this.inventoryRepo.delete(id); return null; }
+  listStockLogs() { return this.stockLogRepo.find({ order: { time: 'DESC' } }); }
+  async stockInOut(body: { sku: string; type: string; qty: number; operator?: string; remark?: string }) {
+    const inv = await this.inventoryRepo.findOne({ where: { sku: body.sku } });
+    if (!inv) throw new NotFoundException('库存商品不存在');
+    const qty = Number(body.qty) || 0;
+    inv.stock = body.type === 'in' ? inv.stock + qty : Math.max(0, inv.stock - qty);
+    inv.updateTime = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    await this.inventoryRepo.save(inv);
+    const log = this.stockLogRepo.create({
+      id: 'STK' + Date.now(), sku: inv.sku, name: inv.name, type: body.type, qty,
+      operator: body.operator || '管理员', remark: body.remark || '',
+      time: inv.updateTime,
+    });
+    await this.stockLogRepo.save(log);
+    return inv;
+  }
+
+  // ---------- 系统：角色 / 账号 / 操作日志 / 站内消息 ----------
+  listRoles() { return this.roleRepo.find({ order: { id: 'ASC' } }); }
+  async createRole(body: Partial<AdminRole>) {
+    const entity = this.roleRepo.create({
+      permissions: [], desc: '', status: 'enabled',
+      createTime: new Date().toISOString().slice(0, 10),
+      ...body, id: undefined,
+    });
+    return this.roleRepo.save(entity);
+  }
+  async updateRole(id: number, body: Partial<AdminRole>) {
+    const entity = await this.roleRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('角色不存在');
+    Object.assign(entity, body, { id });
+    return this.roleRepo.save(entity);
+  }
+  async deleteRole(id: number) { await this.roleRepo.delete(id); return null; }
+
+  listAccounts() { return this.accountRepo.find({ order: { createTime: 'DESC' } }); }
+  async createAccount(body: Partial<AdminAccount>) {
+    const id = body.id || 'U' + Date.now();
+    const entity = this.accountRepo.create({
+      status: 'enabled', lastLogin: '',
+      createTime: new Date().toISOString().slice(0, 10),
+      ...body, id,
+    });
+    return this.accountRepo.save(entity);
+  }
+  async updateAccount(id: string, body: Partial<AdminAccount>) {
+    const entity = await this.accountRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('账号不存在');
+    Object.assign(entity, body, { id });
+    return this.accountRepo.save(entity);
+  }
+  async deleteAccount(id: string) { await this.accountRepo.delete(id); return null; }
+
+  listOpLogs() { return this.opLogRepo.find({ order: { time: 'DESC' } }); }
+
+  listNotices() { return this.noticeRepo.find({ order: { time: 'DESC' } }); }
+  async readNotice(id: string) {
+    const entity = await this.noticeRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('消息不存在');
+    entity.status = 'read';
+    return this.noticeRepo.save(entity);
+  }
+
+  // ---------- 消息通知模板 ----------
+  listMsgTemplates() { return this.msgTemplateRepo.find({ order: { id: 'ASC' } }); }
+  async createMsgTemplate(body: Partial<AdminMsgTemplate>) {
+    const entity = this.msgTemplateRepo.create({ status: 'enabled', channel: 'wx', ...body, id: undefined });
+    return this.msgTemplateRepo.save(entity);
+  }
+  async updateMsgTemplate(id: number, body: Partial<AdminMsgTemplate>) {
+    const entity = await this.msgTemplateRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('模板不存在');
+    Object.assign(entity, body, { id });
+    return this.msgTemplateRepo.save(entity);
+  }
+  async deleteMsgTemplate(id: number) { await this.msgTemplateRepo.delete(id); return null; }
+
+  // ---------- 师傅审核 ----------
+  listTechApplies() { return this.techApplyRepo.find({ order: { applyTime: 'DESC' } }); }
+  async auditTechApply(id: string, status: string, remark?: string) {
+    const entity = await this.techApplyRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('申请不存在');
+    entity.status = status;
+    if (remark !== undefined) entity.remark = remark;
+    // 审核通过则自动转入师傅库
+    if (status === 'approved') {
+      const exist = await this.technicianRepo.findOne({ where: { phone: entity.phone } });
+      if (!exist) {
+        await this.technicianRepo.save(this.technicianRepo.create({
+          id: 'TECH' + Date.now(), name: entity.name, phone: entity.phone, area: entity.area,
+          online: true, rating: 5, ongoing: 0, totalOrders: 0, level: '认证师傅',
+          joinDate: new Date().toISOString().slice(0, 10),
+        }));
+      }
+    }
+    return this.techApplyRepo.save(entity);
+  }
+
+  // ---------- 设备：故障 / 校准 / 制水记录 ----------
+  listDeviceFaults() { return this.deviceFaultRepo.find({ order: { time: 'DESC' } }); }
+  async handleDeviceFault(id: string, status: string) {
+    const entity = await this.deviceFaultRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('故障记录不存在');
+    entity.status = status;
+    return this.deviceFaultRepo.save(entity);
+  }
+  listDeviceCalibrations() { return this.deviceCalibrationRepo.find({ order: { time: 'DESC' } }); }
+  listWaterRecords() { return this.waterRecordRepo.find({ order: { date: 'DESC' } }); }
+
+  // ---------- 在线客服 ----------
+  listChatSessions() { return this.chatSessionRepo.find({ order: { updateTime: 'DESC' } }); }
+  async getChatSession(id: string) {
+    const entity = await this.chatSessionRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('会话不存在');
+    return entity;
+  }
+  async replyChat(id: string, text: string) {
+    const entity = await this.chatSessionRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('会话不存在');
+    const msgs = Array.isArray(entity.messages) ? entity.messages : [];
+    msgs.push({ from: 'agent', text, time: new Date().toISOString().slice(11, 16) });
+    entity.messages = msgs;
+    entity.lastMsg = text;
+    entity.unread = 0;
+    entity.updateTime = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    return this.chatSessionRepo.save(entity);
+  }
+  async closeChat(id: string) {
+    const entity = await this.chatSessionRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('会话不存在');
+    entity.status = 'closed';
+    return this.chatSessionRepo.save(entity);
+  }
+
+  // ---------- 支付管理 ----------
+  listPaymentRecords() { return this.paymentRecordRepo.find({ order: { time: 'DESC' } }); }
+  async refundPayment(id: string) {
+    const entity = await this.paymentRecordRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('支付流水不存在');
+    entity.status = 'refund';
+    return this.paymentRecordRepo.save(entity);
+  }
+
+  // ---------- 商品套餐 ----------
+  listPackages() { return this.packageRepo.find({ order: { id: 'ASC' } }); }
+  async createPackage(body: Partial<AdminPackage>) {
+    const entity = this.packageRepo.create({
+      items: [], price: 0, originPrice: 0, sales: 0, status: 'enabled', desc: '',
+      ...body, id: undefined,
+    });
+    return this.packageRepo.save(entity);
+  }
+  async updatePackage(id: number, body: Partial<AdminPackage>) {
+    const entity = await this.packageRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('套餐不存在');
+    Object.assign(entity, body, { id });
+    return this.packageRepo.save(entity);
+  }
+  async deletePackage(id: number) { await this.packageRepo.delete(id); return null; }
+
+  // ---------- 分销体系（链动2+1/邀请/阶梯/区域分红 配置） ----------
+  distSystem() { return this.getMetric('distribution.system', {}); }
+  saveDistSystem(body: any) { return this.setMetric('distribution.system', body); }
+  listRegionDividends() { return this.regionDividendRepo.find(); }
+  async updateRegionDividend(id: string, body: Partial<AdminRegionDividend>) {
+    const entity = await this.regionDividendRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('区域分红不存在');
+    Object.assign(entity, body, { id });
+    return this.regionDividendRepo.save(entity);
+  }
+
+  // ---------- 续费统计 ----------
+  renewalData() { return this.getMetric('data.renewal', {}); }
 }

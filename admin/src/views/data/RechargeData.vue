@@ -72,7 +72,7 @@
             <el-pagination
               v-model:current-page="page"
               :page-size="pageSize"
-              :total="rechargeAnalysis.table.length"
+              :total="filteredTable.length"
               layout="prev, pager, next, total"
               background
             />
@@ -159,12 +159,18 @@ const payOption = computed(() => ({
   ]
 }))
 
-// 表格分页（本地）
+// 表格分页（本地）+ 时间段筛选
 const page = ref(1)
 const pageSize = 8
+const filteredTable = computed(() => {
+  let list = rechargeAnalysis.value.table
+  const [start, end] = filter.value.dateRange || []
+  if (start && end) list = list.filter((r) => r.date >= start && r.date <= end)
+  return list
+})
 const pagedTable = computed(() => {
   const start = (page.value - 1) * pageSize
-  return rechargeAnalysis.value.table.slice(start, start + pageSize)
+  return filteredTable.value.slice(start, start + pageSize)
 })
 </script>
 

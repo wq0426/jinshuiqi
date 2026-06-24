@@ -13,8 +13,21 @@ Page({
   allOrders: [],
 
   onLoad(options) {
+    // 兼容旧的带参数进入方式（如有）
+    if (options.tab !== undefined) {
+      getApp().globalData.orderTab = Number(options.tab);
+    }
+  },
+
+  onShow() {
+    // 订单中心作为 tabBar 页：高亮底部「订单」并加载数据
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 3, cartCount: getApp().getCartCount() });
+    }
     if (!auth.requireLogin()) return;
-    const tab = options.tab !== undefined ? Number(options.tab) : -1;
+    const app = getApp();
+    const tab = app.globalData.orderTab !== undefined ? app.globalData.orderTab : -1;
+    app.globalData.orderTab = -1; // 用后即焚，避免下次进入残留
     this.setData({ curTab: tab });
     Promise.all([api.getOrderTabs(), api.getOrders()])
       .then(([tabs, orders]) => {

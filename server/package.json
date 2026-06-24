@@ -1,7 +1,7 @@
 {
   "name": "jinshuiqi-server",
   "version": "1.0.0",
-  "description": "净水器上门服务平台后端 (NestJS + TypeORM + MySQL)",
+  "description": "德康泉净水上门服务平台后端 (NestJS + TypeORM + MySQL)",
   "license": "MIT",
   "scripts": {
     "build": "nest build",

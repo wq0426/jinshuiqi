@@ -87,3 +87,90 @@ export const getPageConfig = () => request.get('/admin/page-config')
 export const savePageConfig = (data) => request.put('/admin/page-config', data)
 export const getSettings = () => request.get('/admin/settings')
 export const saveSettings = (data) => request.put('/admin/settings', data)
+
+// ---------- 排行榜激励 ----------
+export const getRankings = (params) => request.get('/admin/rankings', { params })
+
+// ---------- 营销-积分 ----------
+export const getPointRules = () => request.get('/admin/point-rules')
+export const createPointRule = (data) => request.post('/admin/point-rules', data)
+export const updatePointRule = (id, data) => request.put(`/admin/point-rules/${id}`, data)
+export const deletePointRule = (id) => request.delete(`/admin/point-rules/${id}`)
+export const getPointRecords = () => request.get('/admin/point-records')
+
+// ---------- 库存管理 ----------
+export const getInventory = () => request.get('/admin/inventory')
+export const createInventory = (data) => request.post('/admin/inventory', data)
+export const updateInventory = (id, data) => request.put(`/admin/inventory/${id}`, data)
+export const deleteInventory = (id) => request.delete(`/admin/inventory/${id}`)
+export const getStockLogs = () => request.get('/admin/stock-logs')
+export const stockInOut = (data) => request.post('/admin/stock-inout', data)
+
+// ---------- 系统：角色 / 账号 / 操作日志 / 站内消息 ----------
+export const getRoles = () => request.get('/admin/roles')
+export const createRole = (data) => request.post('/admin/roles', data)
+export const updateRole = (id, data) => request.put(`/admin/roles/${id}`, data)
+export const deleteRole = (id) => request.delete(`/admin/roles/${id}`)
+export const getAccounts = () => request.get('/admin/accounts')
+export const createAccount = (data) => request.post('/admin/accounts', data)
+export const updateAccount = (id, data) => request.put(`/admin/accounts/${id}`, data)
+export const deleteAccount = (id) => request.delete(`/admin/accounts/${id}`)
+export const getOpLogs = () => request.get('/admin/op-logs')
+export const getNotices = () => request.get('/admin/notices')
+export const readNotice = (id) => request.post(`/admin/notices/${id}/read`)
+
+// ---------- 消息通知模板 ----------
+export const getMsgTemplates = () => request.get('/admin/msg-templates')
+export const createMsgTemplate = (data) => request.post('/admin/msg-templates', data)
+export const updateMsgTemplate = (id, data) => request.put(`/admin/msg-templates/${id}`, data)
+export const deleteMsgTemplate = (id) => request.delete(`/admin/msg-templates/${id}`)
+
+// ---------- 师傅审核 ----------
+export const getTechApplies = () => request.get('/admin/tech-applies')
+export const auditTechApply = (id, status, remark) => request.post(`/admin/tech-applies/${id}/audit`, { status, remark })
+
+// ---------- 设备：故障 / 校准 / 制水记录 ----------
+export const getDeviceFaults = () => request.get('/admin/device-faults')
+export const handleDeviceFault = (id, status) => request.post(`/admin/device-faults/${id}/handle`, { status })
+export const getDeviceCalibrations = () => request.get('/admin/device-calibrations')
+export const getWaterRecords = () => request.get('/admin/water-records')
+
+// ---------- 在线客服 ----------
+export const getChatSessions = () => request.get('/admin/chat-sessions')
+export const getChatSession = (id) => request.get(`/admin/chat-sessions/${id}`)
+export const replyChat = (id, text) => request.post(`/admin/chat-sessions/${id}/reply`, { text })
+export const closeChat = (id) => request.post(`/admin/chat-sessions/${id}/close`)
+
+// ---------- 支付管理 ----------
+export const getPaymentRecords = () => request.get('/admin/payment-records')
+export const refundPayment = (id) => request.post(`/admin/payment-records/${id}/refund`)
+
+// ---------- 商品套餐 ----------
+export const getPackages = () => request.get('/admin/packages')
+export const createPackage = (data) => request.post('/admin/packages', data)
+export const updatePackage = (id, data) => request.put(`/admin/packages/${id}`, data)
+export const deletePackage = (id) => request.delete(`/admin/packages/${id}`)
+
+// ---------- 分销体系 / 区域分红 ----------
+export const getDistSystem = () => request.get('/admin/dist-system')
+export const saveDistSystem = (data) => request.put('/admin/dist-system', data)
+export const getRegionDividends = () => request.get('/admin/region-dividends')
+export const updateRegionDividend = (id, data) => request.put(`/admin/region-dividends/${id}`, data)
+
+// ---------- 续费统计 ----------
+export const getRenewalData = () => request.get('/admin/data/renewal')
+
+// ---------- 通用导出（前端 CSV） ----------
+export function exportCsv(filename, columns, rows) {
+  const header = columns.map((c) => c.label).join(',')
+  const body = rows
+    .map((r) => columns.map((c) => `"${String(r[c.prop] ?? '').replace(/"/g, '""')}"`).join(','))
+    .join('\n')
+  const csv = '﻿' + header + '\n' + body
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(blob)
+  link.download = `${filename}.csv`
+  link.click()
+  URL.revokeObjectURL(link.href)
+}

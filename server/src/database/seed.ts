@@ -9,20 +9,38 @@ import { DataSource } from 'typeorm';
 import { dataSourceOptions } from '../config/data-source';
 import { Metric } from '../entities/metric.entity';
 import {
+  AdminAccount,
   AdminAlert,
   AdminAlertRule,
   AdminCategory,
+  AdminChatSession,
   AdminCommission,
   AdminCustomer,
   AdminDevice,
+  AdminDeviceCalibration,
+  AdminDeviceFault,
   AdminDeviceModel,
   AdminDistRule,
   AdminDistributor,
+  AdminInventory,
+  AdminMsgTemplate,
+  AdminNotice,
+  AdminOpLog,
   AdminOrder,
+  AdminPackage,
+  AdminPaymentRecord,
+  AdminPointRecord,
+  AdminPointRule,
   AdminProduct,
+  AdminRanking,
   AdminRechargePackage,
   AdminRechargeRecord,
+  AdminRegionDividend,
+  AdminRole,
+  AdminStockLog,
+  AdminTechApply,
   AdminTechnician,
+  AdminWaterRecord,
   AdminWithdrawal,
   AdminWorkorder,
 } from '../entities/admin.entities';
@@ -40,6 +58,10 @@ const ALL_ENTITIES = [
   AdminWorkorder, AdminTechnician, AdminDistributor, AdminCommission,
   AdminWithdrawal, AdminDistRule, AdminCustomer, AdminRechargePackage,
   AdminRechargeRecord, AdminAlert, AdminAlertRule,
+  AdminRanking, AdminPointRule, AdminPointRecord, AdminInventory, AdminStockLog,
+  AdminRole, AdminAccount, AdminOpLog, AdminNotice, AdminMsgTemplate,
+  AdminTechApply, AdminDeviceFault, AdminDeviceCalibration, AdminWaterRecord,
+  AdminChatSession, AdminPaymentRecord, AdminPackage, AdminRegionDividend,
   WxProduct, WxDevice, WxWorkorder, WxOrder, WxAddress,
 ];
 
@@ -66,7 +88,7 @@ const grads = [
   'linear-gradient(135deg,#ff7a45,#ff9c6e)',
 ];
 const productNames = [
-  '净水智服 RO 反渗透净水器 JSQ-R600', '家用直饮纯水机 JSQ-R800 Pro', '台式即热饮水机 JSQ-T100',
+  '德康泉 RO 反渗透净水器 JSQ-R600', '家用直饮纯水机 JSQ-R800 Pro', '台式即热饮水机 JSQ-T100',
   '前置过滤器 40微米 JSQ-Q1', '中央净水机大流量 JSQ-C2000', 'PP 棉滤芯（5寸通用）',
   '活性炭复合滤芯 CTO', 'RO 反渗透膜 600G', '后置椰壳活性炭滤芯', '管线机壁挂即热 JSQ-G5',
   '净水器专用快接管 2米', '鹅颈龙头 304不锈钢', '智能水质 TDS 检测笔', '净水年卡（12期滤芯）',
@@ -96,7 +118,7 @@ const orderCustomers = ['李建国', '王秀英', '张伟', '陈芳', '刘强', 
 const orderAreas = ['杭州市西湖区文一路', '杭州市拱墅区莫干山路', '宁波市海曙区中山路', '杭州市余杭区五常大道', '温州市鹿城区车站大道', '杭州市滨江区江南大道', '绍兴市越城区胜利路', '嘉兴市南湖区中山东路'];
 const orderStatusList = ['待付款', '待发货', '待收货', '已完成', '已取消', '退款中'];
 const goodsPool = [
-  { name: '净水智服 RO 反渗透净水器 JSQ-R600', price: 2680 },
+  { name: '德康泉 RO 反渗透净水器 JSQ-R600', price: 2680 },
   { name: 'PP 棉滤芯（5寸通用）', price: 49 },
   { name: 'RO 反渗透膜 600G', price: 320 },
   { name: '管线机壁挂即热 JSQ-G5', price: 1280 },
@@ -600,7 +622,7 @@ const wxMyGrids = [
 
 // 默认系统设置 / 页面装修（供 GET 返回，前端可改）
 const systemSettings = {
-  base: { siteName: '净水管家服务平台', logo: '净', contact: '400-888-6666', desc: '净水器上门服务、商城、物联网设备管理一体化平台' },
+  base: { siteName: '德康泉管理系统', logo: '泉', contact: '400-888-6666', desc: '德康泉净水上门服务、商城、物联网设备管理一体化平台' },
   iot: { baseUrl: 'https://iot.example.com', appKey: 'jsq_iot_app_key_2026', appSecret: '****************', syncInterval: 5 },
   wx: { appid: 'wx1234567890abcdef', secret: '****************', mchId: '1600000000' },
   security: { loginVerify: true, ipWhitelist: false, pwdExpire: 90 },
@@ -611,7 +633,248 @@ const pageConfigDefault = {
     { id: 2, type: 'nav', props: { cols: 4, items: ['商城', '装机预约', '我的设备', '分销中心', '充值', '维修', '水质检测', '全部'] } },
     { id: 3, type: 'goods', props: { title: '推荐商品', cols: 2, count: 4 } },
   ],
-  pageConfig: { title: '净水管家首页', bgColor: '#f5f7fa' },
+  pageConfig: { title: '德康泉首页', bgColor: '#f5f7fa' },
+};
+
+// ============================================================
+// 三、补齐脑图功能的新增数据
+// ============================================================
+
+// ---- 排行榜激励：销售榜/收益榜 × 个人/团队 × 月/季/年 ----
+const rankNames = ['王建国', '李秀英', '张伟', '陈明', '刘洋', '赵丽', '孙强', '周敏', '吴磊', '郑华'];
+const rankAreas = ['西湖区', '拱墅区', '余杭区', '滨江区', '海曙区', '鹿城区'];
+const rankings: any[] = [];
+let _rid = 1;
+for (const board of ['sales', 'profit']) {
+  for (const scope of ['personal', 'team']) {
+    for (const period of ['month', 'quarter', 'year']) {
+      const mul = period === 'month' ? 1 : period === 'quarter' ? 3 : 12;
+      rankNames.forEach((name, i) => {
+        const base = board === 'sales' ? 86 : 12000;
+        const value = +((base * (10 - i) * mul) * (board === 'sales' ? 1 : 1)).toFixed(board === 'sales' ? 0 : 2);
+        rankings.push({
+          id: _rid++, board, scope, period, rank: i + 1,
+          name: scope === 'team' ? `${name}战队` : name,
+          avatar: name[0], area: rankAreas[i % rankAreas.length],
+          value, trend: ((i * 7) % 5) - 2,
+        });
+      });
+    }
+  }
+}
+
+// ---- 营销-积分：规则 + 明细 ----
+const pointRules = [
+  { id: 1, name: '注册奖励', event: 'register', points: 100, desc: '新用户注册即送 100 积分', enabled: true },
+  { id: 2, name: '每日签到', event: 'sign', points: 5, desc: '每日签到获得 5 积分', enabled: true },
+  { id: 3, name: '消费奖励', event: 'order', points: 1, desc: '每消费 1 元得 1 积分', enabled: true },
+  { id: 4, name: '充值奖励', event: 'recharge', points: 2, desc: '每充值 1 元得 2 积分', enabled: true },
+  { id: 5, name: '邀请好友', event: 'invite', points: 200, desc: '成功邀请 1 位好友得 200 积分', enabled: true },
+  { id: 6, name: '评价晒单', event: 'review', points: 20, desc: '完成评价晒单得 20 积分', enabled: false },
+];
+const pointRecords = Array.from({ length: 24 }).map((_, i) => {
+  const earn = i % 3 !== 0;
+  return {
+    id: 'PT' + String(20260616000 + i),
+    customer: custNames[i % custNames.length],
+    phone: '138' + String(10000000 + i * 137).slice(0, 8),
+    type: earn ? 'earn' : 'spend',
+    points: earn ? [5, 100, 20, 200][i % 4] : [50, 100, 200][i % 3],
+    reason: earn ? ['每日签到', '注册奖励', '评价晒单', '邀请好友'][i % 4] : ['积分兑换滤芯', '积分抵现', '兑换优惠券'][i % 3],
+    balance: 500 + ((i * 37) % 2000),
+    time: `2026-06-${String(16 - (i % 16)).padStart(2, '0')} ${String(8 + (i % 12)).padStart(2, '0')}:30`,
+  };
+});
+
+// ---- 库存管理：库存 + 出入库记录 ----
+const invNames = [
+  ['JSQ-R600 整机', 'SKU-R600', 'JSQ-R600', '净水器整机', '台'],
+  ['JSQ-R800 Pro 整机', 'SKU-R800', 'JSQ-R800 Pro', '净水器整机', '台'],
+  ['PP棉滤芯', 'SKU-PP01', '通用', '滤芯耗材', '支'],
+  ['活性炭滤芯', 'SKU-AC01', '通用', '滤芯耗材', '支'],
+  ['RO反渗透膜', 'SKU-RO01', '通用', '滤芯耗材', '支'],
+  ['前置过滤器', 'SKU-PRE1', 'JSQ-Q3', '前置过滤器', '台'],
+  ['管线机 G5', 'SKU-G5', 'JSQ-G5', '管线机', '台'],
+  ['水龙头配件', 'SKU-FT01', '通用', '配件附件', '个'],
+];
+const inventory = invNames.map((it, i) => ({
+  id: i + 1, name: it[0], sku: it[1], model: it[2], category: it[3], unit: it[4],
+  stock: [120, 86, 540, 480, 320, 64, 28, 760][i],
+  warnLine: [20, 20, 100, 100, 80, 15, 10, 100][i],
+  location: `${'ABC'[i % 3]}区-${(i % 5) + 1}号货架`,
+  updateTime: `2026-06-${String(16 - (i % 10)).padStart(2, '0')} 10:00`,
+}));
+const stockLogs = Array.from({ length: 18 }).map((_, i) => {
+  const it = invNames[i % invNames.length];
+  return {
+    id: 'STK' + String(20260616000 + i),
+    sku: it[1], name: it[0], type: i % 2 === 0 ? 'in' : 'out',
+    qty: 10 + ((i * 7) % 90), operator: ['仓管员张三', '仓管员李四'][i % 2],
+    remark: i % 2 === 0 ? '采购入库' : '工单领用出库',
+    time: `2026-06-${String(16 - (i % 16)).padStart(2, '0')} ${String(9 + (i % 8)).padStart(2, '0')}:15`,
+  };
+});
+
+// ---- 系统：角色 / 账号 / 操作日志 / 站内消息 ----
+const ALL_PERMS = ['dashboard', 'mall', 'device', 'workorder', 'distribution', 'customer', 'recharge', 'inventory', 'marketing', 'ranking', 'system'];
+const roles = [
+  { id: 1, name: '超级管理员', code: 'super', permissions: ALL_PERMS, desc: '拥有全部权限', status: 'enabled', createTime: '2026-01-01' },
+  { id: 2, name: '运营管理员', code: 'operator', permissions: ['dashboard', 'mall', 'recharge', 'marketing', 'ranking', 'customer'], desc: '负责商城与营销运营', status: 'enabled', createTime: '2026-01-02' },
+  { id: 3, name: '客服专员', code: 'service', permissions: ['dashboard', 'workorder', 'customer'], desc: '负责工单与客户服务', status: 'enabled', createTime: '2026-01-03' },
+  { id: 4, name: '仓库管理员', code: 'warehouse', permissions: ['dashboard', 'inventory', 'device'], desc: '负责库存与设备', status: 'enabled', createTime: '2026-01-04' },
+];
+const accounts = [
+  { id: 'U001', username: 'admin', name: '系统管理员', roleCode: 'super', role: '超级管理员', phone: '13800000000', status: 'enabled', lastLogin: '2026-06-16 09:00', createTime: '2026-01-01' },
+  { id: 'U002', username: 'yunying', name: '王运营', roleCode: 'operator', role: '运营管理员', phone: '13800000001', status: 'enabled', lastLogin: '2026-06-15 18:20', createTime: '2026-02-10' },
+  { id: 'U003', username: 'kefu01', name: '李客服', roleCode: 'service', role: '客服专员', phone: '13800000002', status: 'enabled', lastLogin: '2026-06-16 08:40', createTime: '2026-03-05' },
+  { id: 'U004', username: 'cangku', name: '张仓管', roleCode: 'warehouse', role: '仓库管理员', phone: '13800000003', status: 'disabled', lastLogin: '2026-06-10 17:00', createTime: '2026-03-20' },
+];
+const opLogs = Array.from({ length: 20 }).map((_, i) => ({
+  id: 'LOG' + String(20260616000 + i),
+  user: ['系统管理员', '王运营', '李客服', '张仓管'][i % 4],
+  module: ['商城管理', '工单管理', '分销管理', '库存管理', '系统设置'][i % 5],
+  action: ['新增商品', '派单', '审核提现', '入库操作', '修改角色权限'][i % 5],
+  ip: `192.168.1.${10 + (i % 200)}`,
+  detail: `操作对象 ID #${1000 + i}`,
+  time: `2026-06-${String(16 - (i % 16)).padStart(2, '0')} ${String(9 + (i % 9)).padStart(2, '0')}:${String((i * 13) % 60).padStart(2, '0')}`,
+}));
+const notices = Array.from({ length: 10 }).map((_, i) => ({
+  id: 'MSG' + String(20260616000 + i),
+  title: ['新订单提醒', '工单超时预警', '提现待审核', '滤芯库存不足', '系统维护通知'][i % 5],
+  content: ['您有一笔新订单待处理', '工单 WO20260616 已超时', '有 3 笔提现申请待审核', 'PP棉滤芯库存低于预警线', '系统将于今晚 23:00 维护'][i % 5],
+  type: ['order', 'alert', 'system', 'alert', 'system'][i % 5],
+  target: '全体管理员', status: i < 4 ? 'unread' : 'read',
+  time: `2026-06-${String(16 - (i % 10)).padStart(2, '0')} ${String(8 + i % 10).padStart(2, '0')}:00`,
+}));
+
+// ---- 消息通知模板 ----
+const msgTemplates = [
+  { id: 1, name: '订单支付成功', scene: 'order_paid', channel: 'wx', content: '尊敬的{customer}，您的订单{orderId}已支付成功，金额{amount}元。', status: 'enabled' },
+  { id: 2, name: '工单派单通知', scene: 'workorder_dispatch', channel: 'sms', content: '【德康泉】{technician}师傅已接单，将于{appointTime}上门服务。', status: 'enabled' },
+  { id: 3, name: '滤芯到期提醒', scene: 'filter_expire', channel: 'wx', content: '您的设备{deviceSn}滤芯寿命仅剩{filterLife}%，请及时更换。', status: 'enabled' },
+  { id: 4, name: '续费到期提醒', scene: 'renew_expire', channel: 'sms', content: '【德康泉】您的水站套餐将于{date}到期，请及时续费。', status: 'enabled' },
+  { id: 5, name: '充值成功通知', scene: 'recharge_success', channel: 'wx', content: '充值成功！本次到账{amount}元，赠送{gift}元。', status: 'enabled' },
+  { id: 6, name: '提现审核结果', scene: 'withdraw_audit', channel: 'site', content: '您的提现申请{amount}元已{status}。', status: 'disabled' },
+];
+
+// ---- 师傅入驻审核 ----
+const techApplies = Array.from({ length: 8 }).map((_, i) => ({
+  id: 'TA' + String(20260616000 + i),
+  name: ['周师傅', '吴师傅', '郑师傅', '冯师傅', '陈师傅', '褚师傅', '卫师傅', '蒋师傅'][i],
+  phone: '139' + String(20000000 + i * 271).slice(0, 8),
+  area: rankAreas[i % rankAreas.length],
+  idcard: `3301**********${String(1000 + i).slice(0, 4)}`,
+  experience: ['3年净水器安装', '5年家电维修', '2年管道工', '8年水电安装'][i % 4],
+  status: i < 4 ? 'pending' : i < 6 ? 'approved' : 'rejected',
+  applyTime: `2026-06-${String(16 - i).padStart(2, '0')} ${String(10 + i % 8).padStart(2, '0')}:20`,
+  remark: i >= 6 ? '资质不符' : '',
+}));
+
+// ---- 设备：故障记录 / 校准记录 / 制水记录 ----
+const deviceFaults = Array.from({ length: 14 }).map((_, i) => ({
+  id: 'FT' + String(20260616000 + i),
+  deviceSn: 'SN' + String(100001 + i),
+  model: ['JSQ-R600', 'JSQ-R800 Pro', 'JSQ-G5'][i % 3],
+  customer: custNames[i % custNames.length],
+  faultType: ['制水异常', '漏水', 'TDS超标', '不出水', '噪音过大'][i % 5],
+  level: ['high', 'mid', 'low'][i % 3],
+  desc: ['制水量明显下降', '机身底部渗水', '出水TDS高于100', '完全无法出水', '运行噪音异常'][i % 5],
+  status: ['pending', 'handling', 'resolved'][i % 3],
+  time: `2026-06-${String(16 - (i % 14)).padStart(2, '0')} ${String(8 + i % 10).padStart(2, '0')}:10`,
+}));
+const deviceCalibrations = Array.from({ length: 12 }).map((_, i) => {
+  const after = 18 + (i % 12);
+  return {
+    id: 'CAL' + String(20260616000 + i),
+    deviceSn: 'SN' + String(100001 + i),
+    model: ['JSQ-R600', 'JSQ-R800 Pro', 'JSQ-G5'][i % 3],
+    tdsBefore: 40 + (i % 30), tdsAfter: after,
+    operator: ['赵师傅', '钱师傅', '孙师傅'][i % 3],
+    result: after <= 50 ? 'pass' : 'fail',
+    time: `2026-06-${String(16 - (i % 12)).padStart(2, '0')} ${String(9 + i % 8).padStart(2, '0')}:30`,
+  };
+});
+const waterRecords = Array.from({ length: 20 }).map((_, i) => ({
+  id: 'WR' + String(20260616000 + i),
+  deviceSn: 'SN' + String(100001 + (i % 14)),
+  customer: custNames[i % custNames.length],
+  date: `2026-06-${String(16 - (i % 16)).padStart(2, '0')}`,
+  water: +(20 + ((i * 13) % 80) + Math.floor(i / 4)).toFixed(1),
+  tds: 15 + (i % 20), inTds: 180 + (i % 120),
+}));
+
+// ---- 在线客服会话 ----
+const chatSessions = Array.from({ length: 8 }).map((_, i) => ({
+  id: 'CS' + String(20260616000 + i),
+  customer: custNames[i % custNames.length],
+  phone: '137' + String(30000000 + i * 311).slice(0, 8),
+  avatar: custNames[i % custNames.length][0],
+  lastMsg: ['请问滤芯多久换一次？', '我的设备不出水了', '可以预约上门吗', '充值优惠还有吗', '谢谢，已解决'][i % 5],
+  unread: i < 3 ? (i + 1) : 0,
+  status: i < 6 ? 'open' : 'closed',
+  updateTime: `2026-06-16 ${String(9 + i).padStart(2, '0')}:${String((i * 9) % 60).padStart(2, '0')}`,
+  messages: [
+    { from: 'customer', text: ['请问滤芯多久换一次？', '我的设备不出水了', '可以预约上门吗'][i % 3], time: '09:30' },
+    { from: 'agent', text: '您好，已为您查询，正在处理中~', time: '09:31' },
+  ],
+}));
+
+// ---- 支付流水 ----
+const paymentRecords = Array.from({ length: 20 }).map((_, i) => ({
+  id: 'PAY' + String(20260616000 + i),
+  orderId: (i % 2 === 0 ? 'OD' : 'RC') + String(20260616000 + i),
+  customer: custNames[i % custNames.length],
+  channel: ['wxpay', 'alipay', 'balance'][i % 3],
+  amount: +(99 + ((i * 137) % 3000)).toFixed(2),
+  type: i % 4 === 3 ? 'refund' : i % 2 === 0 ? 'order' : 'recharge',
+  status: i % 7 === 6 ? 'refund' : i % 11 === 10 ? 'fail' : 'success',
+  time: `2026-06-${String(16 - (i % 16)).padStart(2, '0')} ${String(8 + i % 12).padStart(2, '0')}:${String((i * 7) % 60).padStart(2, '0')}`,
+}));
+
+// ---- 商品套餐（组合套餐） ----
+const packages = [
+  { id: 1, name: '净水器整机+年度滤芯套餐', items: ['JSQ-R600 整机 ×1', 'PP棉滤芯 ×2', '活性炭滤芯 ×2', 'RO膜 ×1'], price: 2980, originPrice: 3680, sales: 326, status: 'enabled', desc: '一站式购齐，省心一整年' },
+  { id: 2, name: '滤芯年度更换套餐', items: ['PP棉滤芯 ×2', '活性炭滤芯 ×2', 'RO膜 ×1'], price: 680, originPrice: 880, sales: 512, status: 'enabled', desc: '全年滤芯一次配齐' },
+  { id: 3, name: '前置+管线机组合', items: ['前置过滤器 ×1', '管线机 G5 ×1'], price: 1880, originPrice: 2380, sales: 168, status: 'enabled', desc: '入户净水升级方案' },
+  { id: 4, name: '新装尝鲜套餐', items: ['JSQ-U400 整机 ×1', '安装服务 ×1'], price: 1599, originPrice: 1999, sales: 86, status: 'disabled', desc: '含上门安装' },
+];
+
+// ---- 分销-区域分红 ----
+const regionDividends = rankAreas.map((region, i) => ({
+  id: 'RD' + String(100 + i),
+  region, manager: rankNames[i], level: ['钻石', '金牌', '银牌'][i % 3],
+  memberCount: 120 - i * 12, dividendRate: [5, 4, 3][i % 3],
+  monthAmount: +(28600 - i * 3200).toFixed(2), totalAmount: +(286000 - i * 32000).toFixed(2),
+  status: 'enabled',
+}));
+
+// ---- 续费统计（聚合指标） ----
+const renewalData = {
+  trend: { months: ['1月', '2月', '3月', '4月', '5月', '6月'], count: [180, 210, 240, 260, 300, 340], rate: [62, 65, 68, 70, 72, 75] },
+  byPackage: [{ name: '月卡续费', value: 680 }, { name: '季卡续费', value: 420 }, { name: '年卡续费', value: 520 }, { name: '两年卡续费', value: 160 }],
+  byArea: [{ name: '西湖区', value: 320 }, { name: '拱墅区', value: 260 }, { name: '余杭区', value: 220 }, { name: '滨江区', value: 180 }, { name: '海曙区', value: 120 }],
+  summary: { renewCount: 1780, renewAmount: 1286000, renewRate: 72.4, expireSoon: 86 },
+  table: Array.from({ length: 12 }).map((_, i) => ({
+    date: `2026-06-${String(16 - i).padStart(2, '0')}`,
+    customer: custNames[i % custNames.length],
+    package: ['月卡套餐', '季卡套餐', '年卡套餐'][i % 3],
+    amount: +(99 + ((i * 137) % 1200)).toFixed(2),
+    nextExpire: `2026-${String(7 + (i % 6)).padStart(2, '0')}-${String(10 + i).padStart(2, '0')}`,
+  })),
+};
+
+// ---- 分销体系配置（链动2+1 / 直推 / 邀请 / 阶梯 / 区域分红） ----
+const distSystemConfig = {
+  chain21: { enabled: true, autoUpgrade: true, desc: '链动2+1：推荐2人复购，第3人升级为团队长，享团队分红' },
+  directReward: { enabled: true, rate: 15, desc: '直推奖励：直接推荐成交，奖励订单金额 15%' },
+  inviteReward: { enabled: true, amount: 200, pointsAmount: 200, desc: '邀请奖励：每成功邀请 1 位实名好友奖励 200 元 + 200 积分' },
+  ladder: { enabled: true, levels: [
+    { level: '普通会员', condition: '注册即可', directRate: 10, teamRate: 0 },
+    { level: '银牌会员', condition: '团队≥10人', directRate: 12, teamRate: 3 },
+    { level: '金牌会员', condition: '团队≥50人', directRate: 15, teamRate: 5 },
+    { level: '钻石会员', condition: '团队≥200人', directRate: 18, teamRate: 8 },
+  ] },
+  regionDividend: { enabled: true, desc: '区域分红：区域代理按辖区业绩享 3%~5% 区域分红' },
 };
 
 // ============================================================
@@ -641,6 +904,27 @@ async function run() {
   await ds.getRepository(AdminRechargeRecord).save(rechargeRecords);
   console.log('✓ 管理后台业务表写入完成');
 
+  // ---- 补齐脑图功能的新增表 ----
+  await ds.getRepository(AdminRanking).save(rankings);
+  await ds.getRepository(AdminPointRule).save(pointRules);
+  await ds.getRepository(AdminPointRecord).save(pointRecords);
+  await ds.getRepository(AdminInventory).save(inventory);
+  await ds.getRepository(AdminStockLog).save(stockLogs);
+  await ds.getRepository(AdminRole).save(roles);
+  await ds.getRepository(AdminAccount).save(accounts);
+  await ds.getRepository(AdminOpLog).save(opLogs);
+  await ds.getRepository(AdminNotice).save(notices);
+  await ds.getRepository(AdminMsgTemplate).save(msgTemplates);
+  await ds.getRepository(AdminTechApply).save(techApplies);
+  await ds.getRepository(AdminDeviceFault).save(deviceFaults);
+  await ds.getRepository(AdminDeviceCalibration).save(deviceCalibrations);
+  await ds.getRepository(AdminWaterRecord).save(waterRecords);
+  await ds.getRepository(AdminChatSession).save(chatSessions);
+  await ds.getRepository(AdminPaymentRecord).save(paymentRecords);
+  await ds.getRepository(AdminPackage).save(packages);
+  await ds.getRepository(AdminRegionDividend).save(regionDividends);
+  console.log('✓ 新增业务表写入完成');
+
   await ds.getRepository(WxProduct).save(wxProducts);
   await ds.getRepository(WxDevice).save(wxDevices);
   await ds.getRepository(WxWorkorder).save(wxWorkOrders as any);
@@ -659,7 +943,9 @@ async function run() {
     ['data.recharge', rechargeAnalysis],
     ['data.customer', customerAnalysis],
     ['data.screen', screenData],
+    ['data.renewal', renewalData],
     ['distribution.overview', distOverview],
+    ['distribution.system', distSystemConfig],
     ['recharge.trend', rechargeTrend],
     ['system.settings', systemSettings],
     ['page.config', pageConfigDefault],

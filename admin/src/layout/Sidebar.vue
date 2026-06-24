@@ -1,9 +1,9 @@
 <template>
   <div class="sidebar" :class="{ collapsed }">
     <div class="logo">
-      <span class="logo-icon">💧</span>
+      <img class="logo-icon" src="/logo.svg" alt="德康泉" />
       <transition name="fade">
-        <span v-show="!collapsed" class="logo-text">净水智服</span>
+        <span v-show="!collapsed" class="logo-text">德康泉管理系统</span>
       </transition>
     </div>
     <el-scrollbar class="menu-scroll">
@@ -94,8 +94,10 @@ function onChildClick(child) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
   .logo-icon {
-    font-size: 24px;
+    width: 30px;
+    height: 30px;
     margin-right: 10px;
+    flex-shrink: 0;
   }
   .logo-text {
     background: linear-gradient(135deg, #3a8ef6 0%, #26c6da 100%);

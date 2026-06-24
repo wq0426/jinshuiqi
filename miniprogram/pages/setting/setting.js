@@ -36,7 +36,7 @@ Page({
   showAbout() {
     wx.showModal({
       title: '关于我们',
-      content: '净水管家服务平台\n版本 v' + this.data.version + '\n客服热线 400-888-6666',
+      content: '德康泉\n版本 v' + this.data.version + '\n客服热线 400-888-6666',
       showCancel: false,
       confirmText: '知道了'
     });

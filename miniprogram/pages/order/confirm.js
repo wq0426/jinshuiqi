@@ -66,7 +66,9 @@ Page({
       app.globalData.cart = app.globalData.cart.filter(it => !it.checked);
       app.saveCart();
       setTimeout(() => {
-        wx.redirectTo({ url: '/pages/order/list?tab=0' });
+        // 订单中心已是 tabBar 页，改用 switchTab，并通过全局态定位到「待付款」
+        app.globalData.orderTab = 0;
+        wx.switchTab({ url: '/pages/order/list' });
       }, 900);
     }, 800);
   }

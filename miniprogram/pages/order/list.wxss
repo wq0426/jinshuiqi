@@ -1,0 +1,71 @@
+.page { min-height: 100vh; }
+
+.tab-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  background: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,.03);
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 26rpx 0;
+  font-size: 27rpx;
+  color: #4a5568;
+  position: relative;
+}
+.tab-active { color: #3A8EF6; font-weight: 700; }
+.tab-active::after {
+  content: '';
+  position: absolute;
+  left: 50%; bottom: 8rpx;
+  transform: translateX(-50%);
+  width: 44rpx; height: 6rpx;
+  background: linear-gradient(90deg,#3A8EF6,#26C6DA);
+  border-radius: 999rpx;
+}
+
+.list { padding: 24rpx; }
+.order { padding: 26rpx; margin-bottom: 22rpx; }
+.o-head { padding-bottom: 18rpx; border-bottom: 1rpx solid #eef1f6; }
+.o-id { font-size: 24rpx; color: #9aa4b2; }
+.o-status { font-size: 26rpx; font-weight: 600; }
+.o-status.wait { color: #ff9f43; }
+.o-status.ing { color: #3A8EF6; }
+.o-status.done { color: #2dd0a0; }
+
+.g-item { display: flex; padding: 18rpx 0; }
+.g-img { width: 130rpx; height: 130rpx; border-radius: 12rpx; flex-shrink: 0; }
+.g-body { flex: 1; margin: 0 16rpx; }
+.g-title { font-size: 27rpx; line-height: 38rpx; }
+.g-spec { font-size: 22rpx; color: #9aa4b2; margin-top: 10rpx; }
+.g-right { text-align: right; }
+.price { font-size: 30rpx; }
+.g-count { font-size: 24rpx; color: #9aa4b2; margin-top: 10rpx; }
+
+.o-foot { padding-top: 18rpx; border-top: 1rpx solid #eef1f6; }
+.o-total { font-size: 25rpx; color: #4a5568; }
+.o-btns { display: flex; }
+.o-btn {
+  height: 64rpx;
+  line-height: 64rpx;
+  font-size: 25rpx;
+  padding: 0 30rpx;
+  border-radius: 999rpx;
+  background: #fff;
+  color: #4a5568;
+  border: 2rpx solid #d8e0ea;
+  margin: 0;
+}
+.o-btn::after { border: none; }
+.o-btn.primary {
+  background: linear-gradient(135deg,#3A8EF6,#26C6DA);
+  color: #fff;
+  border: none;
+}
+
+.empty { display: flex; flex-direction: column; align-items: center; padding-top: 160rpx; }
+.empty-emoji { font-size: 130rpx; opacity: .3; }
+.empty-text { color: #9aa4b2; font-size: 28rpx; margin-top: 20rpx; }

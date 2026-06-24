@@ -1,0 +1,80 @@
+.page { min-height: 100vh; }
+
+.head {
+  background: linear-gradient(135deg,#8e7bff,#5b9bff);
+  padding: 24rpx 24rpx 60rpx;
+}
+.level-card { padding: 6rpx 4rpx; }
+.lv-name { color: #fff; font-size: 38rpx; font-weight: 700; }
+.lv-desc { color: rgba(255,255,255,.85); font-size: 23rpx; margin-top: 12rpx; }
+.invite-btn {
+  color: #6a4fff;
+  background: #fff;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 12rpx 26rpx;
+  border-radius: 999rpx;
+}
+.comm-row { display: flex; margin: 36rpx 0 24rpx; }
+.comm-item { flex: 1; text-align: center; }
+.c-num { color: #fff; font-size: 38rpx; font-weight: 700; }
+.c-label { color: rgba(255,255,255,.85); font-size: 21rpx; margin-top: 8rpx; }
+.withdraw-btn {
+  background: rgba(255,255,255,.95);
+  color: #6a4fff;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 999rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+.withdraw-btn::after { border: none; }
+
+.mini-cards { display: flex; padding: 0 24rpx; margin-top: -30rpx; justify-content: space-between; }
+.mini { width: 222rpx; padding: 26rpx 0; text-align: center; }
+.mc-num { font-size: 36rpx; font-weight: 700; color: #6a4fff; }
+.mc-label { font-size: 22rpx; color: #8a94a6; margin-top: 8rpx; }
+
+.sec { margin: 24rpx; padding: 28rpx; }
+.sec-title { font-size: 30rpx; font-weight: 700; margin-bottom: 24rpx; }
+
+/* 等级权益 */
+.lv-item { display: flex; align-items: center; padding: 18rpx 0; border-bottom: 1rpx solid #f3f5f8; }
+.lv-item:last-child { border-bottom: none; }
+.lv-emoji { font-size: 44rpx; width: 70rpx; text-align: center; }
+.lv-info { flex: 1; margin-left: 16rpx; }
+.lv-t { font-size: 28rpx; font-weight: 600; }
+.lv-c { font-size: 22rpx; color: #9aa4b2; margin-top: 6rpx; }
+.lv-rate { font-size: 22rpx; color: #6a4fff; text-align: right; max-width: 280rpx; }
+
+/* 收益明细 */
+.income-item { display: flex; align-items: center; padding: 20rpx 0; border-bottom: 1rpx solid #f3f5f8; }
+.income-item:last-child { border-bottom: none; }
+.ii-body { flex: 1; }
+.ii-name { font-size: 27rpx; }
+.ii-meta { margin-top: 10rpx; display: flex; align-items: center; }
+.ii-time { font-size: 21rpx; color: #b4bccc; margin-left: 12rpx; }
+.ii-amount { font-size: 32rpx; font-weight: 700; color: #ff5b5b; }
+
+/* 团队 */
+.team-tab { display: flex; background: #f3f5f8; border-radius: 12rpx; padding: 6rpx; margin-bottom: 20rpx; }
+.tt { flex: 1; text-align: center; padding: 16rpx 0; font-size: 26rpx; color: #4a5568; border-radius: 10rpx; }
+.tt.active { background: #fff; color: #6a4fff; font-weight: 700; box-shadow: 0 2rpx 8rpx rgba(0,0,0,.06); }
+
+.member { display: flex; align-items: center; padding: 18rpx 0; border-bottom: 1rpx solid #f3f5f8; }
+.member:last-child { border-bottom: none; }
+.mb-avatar {
+  width: 80rpx; height: 80rpx;
+  border-radius: 50%;
+  background: #eef1f6;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 42rpx;
+}
+.mb-body { flex: 1; margin-left: 18rpx; }
+.mb-name { font-size: 28rpx; font-weight: 600; }
+.mb-lv { margin-left: 12rpx; }
+.mb-time { font-size: 21rpx; color: #b4bccc; margin-top: 8rpx; }
+.mb-contrib { text-align: right; }
+.mb-c-num { font-size: 28rpx; font-weight: 700; color: #6a4fff; }
+.mb-c-label { font-size: 20rpx; color: #b4bccc; margin-top: 4rpx; }
+.team-empty { text-align: center; color: #b4bccc; font-size: 26rpx; padding: 40rpx 0; }

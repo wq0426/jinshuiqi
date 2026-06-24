@@ -1,0 +1,94 @@
+<!-- 首页 -->
+<view class="page">
+  <!-- 渐变头图 + 自定义导航 -->
+  <view class="header gradient-primary">
+    <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-title">净享水站 <text class="nav-sub">让每一滴水更安心</text></view>
+    <view class="search" bindtap="goSearch">
+      <text class="search-icon">🔍</text>
+      <text class="search-ph">搜索净水器 / 滤芯 / 服务</text>
+    </view>
+  </view>
+
+  <view class="body">
+    <!-- 轮播 banner -->
+    <swiper class="banner" indicator-dots indicator-active-color="#fff" indicator-color="rgba(255,255,255,.4)" autoplay circular interval="3500">
+      <swiper-item wx:for="{{banners}}" wx:key="id">
+        <view class="banner-card" style="background:{{item.color}}">
+          <view class="banner-text">
+            <view class="banner-title">{{item.title}}</view>
+            <view class="banner-sub">{{item.subtitle}}</view>
+            <view class="banner-btn">立即查看</view>
+          </view>
+          <view class="banner-emoji">{{item.emoji}}</view>
+        </view>
+      </swiper-item>
+    </swiper>
+
+    <!-- 金刚区 -->
+    <view class="grid-wrap card">
+      <view class="grid-item" wx:for="{{grids}}" wx:key="id" data-url="{{item.url}}" data-tab="{{item.tab}}" bindtap="onGrid">
+        <view class="grid-icon" style="background:{{item.color}}">{{item.emoji}}</view>
+        <text class="grid-name">{{item.name}}</text>
+      </view>
+    </view>
+
+    <!-- 我的设备状态卡 -->
+    <view class="device-card card" bindtap="goDevice">
+      <view class="row between">
+        <view class="row">
+          <view class="dev-emoji" style="background:{{device.color}}">{{device.emoji}}</view>
+          <view class="col" style="margin-left:16rpx">
+            <view class="dev-name">{{device.name}}</view>
+            <view class="dev-tag"><text class="dot online"></text>设备在线 · {{device.room}}</view>
+          </view>
+        </view>
+        <text class="dev-more">详情 ›</text>
+      </view>
+      <view class="dev-data">
+        <view class="dev-data-item">
+          <view class="dev-num">{{device.tdsOut}}<text class="unit">ppm</text></view>
+          <view class="dev-label">出水TDS</view>
+        </view>
+        <view class="vline"></view>
+        <view class="dev-data-item">
+          <view class="dev-num good">优</view>
+          <view class="dev-label">水质等级</view>
+        </view>
+        <view class="vline"></view>
+        <view class="dev-data-item">
+          <view class="dev-num">{{device.filters[2].life}}<text class="unit">%</text></view>
+          <view class="dev-label">滤芯寿命</view>
+        </view>
+      </view>
+      <view class="dev-bar">
+        <view class="dev-bar-fill" style="width:{{device.filters[2].life}}%"></view>
+      </view>
+    </view>
+
+    <!-- 推荐商品横滑 -->
+    <view class="sec-head">
+      <view class="sec-title">🔥 热销推荐</view>
+      <text class="sec-more" data-url="/pages/mall/mall" data-tab="{{true}}" bindtap="onGrid">更多 ›</text>
+    </view>
+    <scroll-view scroll-x class="rec-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="rec-item card" wx:for="{{recommend}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+        <view class="rec-img img-ph" style="background:{{item.color}}">{{item.emoji}}</view>
+        <view class="rec-title ellipsis-2">{{item.title}}</view>
+        <view class="rec-price price"><text class="price-symbol">¥</text>{{item.price}}</view>
+      </view>
+    </scroll-view>
+
+    <!-- 服务流程 -->
+    <view class="sec-head"><view class="sec-title">🛠️ 上门服务流程</view></view>
+    <view class="flow card">
+      <view class="flow-item" wx:for="{{flow}}" wx:key="step">
+        <view class="flow-icon">{{item.emoji}}</view>
+        <view class="flow-name">{{item.name}}</view>
+        <view class="flow-step">{{item.step}}</view>
+      </view>
+    </view>
+
+    <view style="height:140rpx"></view>
+  </view>
+</view>

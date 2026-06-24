@@ -1,0 +1,60 @@
+<!-- 订单详情 -->
+<view class="page">
+  <!-- 状态头 -->
+  <view class="status-head gradient-primary">
+    <view class="sh-text">{{order.statusText}}</view>
+    <view class="sh-sub" wx:if="{{order.install}}">{{order.install}}</view>
+  </view>
+
+  <!-- 收货地址 -->
+  <view class="addr card">
+    <view class="addr-icon">📍</view>
+    <view class="addr-body">
+      <view class="row">
+        <text class="addr-name">{{order.address.name}}</text>
+        <text class="addr-phone">{{order.address.phone}}</text>
+      </view>
+      <view class="addr-detail">{{order.address.detail}}</view>
+    </view>
+  </view>
+
+  <!-- 物流/安装时间线 -->
+  <view class="card sec" wx:if="{{order.logistics.length > 0}}">
+    <view class="sec-title">物流 / 安装进度</view>
+    <view class="timeline">
+      <view class="tl-item {{idx===0?'first':''}}" wx:for="{{order.logistics}}" wx:for-index="idx" wx:key="time">
+        <view class="tl-dot"></view>
+        <view class="tl-body">
+          <view class="tl-text">{{item.text}}</view>
+          <view class="tl-time">{{item.time}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商品清单 -->
+  <view class="card sec">
+    <view class="sec-title">商品信息</view>
+    <view class="g-item" wx:for="{{order.items}}" wx:key="id">
+      <view class="g-img img-ph" style="background:{{item.color}}">{{item.emoji}}</view>
+      <view class="g-body">
+        <view class="g-title ellipsis-2">{{item.title}}</view>
+        <view class="g-spec">{{item.spec}}</view>
+      </view>
+      <view class="g-right">
+        <view class="price"><text class="price-symbol">¥</text>{{item.price}}</view>
+        <view class="g-count">×{{item.count}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="card sec">
+    <view class="info-row"><text>订单编号</text><text class="info-val" bindtap="copyId">{{order.id}} 复制</text></view>
+    <view class="info-row"><text>下单时间</text><text class="info-val">{{order.createTime}}</text></view>
+    <view class="info-row"><text>运费</text><text class="info-val">¥{{order.freight}}.00</text></view>
+    <view class="info-row total"><text>实付金额</text><text class="price info-total">¥{{order.total}}</text></view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

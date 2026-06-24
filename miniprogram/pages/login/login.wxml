@@ -1,0 +1,15 @@
+<!-- 登录 -->
+<view class="page gradient-primary">
+  <view class="logo-wrap">
+    <view class="logo">净</view>
+    <view class="app-name">净水管家</view>
+    <view class="app-desc">净水器上门服务 · 商城 · 设备管理</view>
+  </view>
+
+  <view class="login-box">
+    <button class="btn-login" loading="{{logging}}" bindtap="onLogin">
+      微信一键登录
+    </button>
+    <view class="tip">登录后即可查看订单、设备与个人数据</view>
+  </view>
+</view>

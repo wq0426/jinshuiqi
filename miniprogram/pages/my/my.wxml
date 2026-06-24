@@ -1,0 +1,61 @@
+<!-- 我的 -->
+<view class="page">
+  <!-- 渐变用户头部 -->
+  <view class="header gradient-primary">
+    <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+    <view class="user-row">
+      <view class="avatar">{{user.avatar}}</view>
+      <view class="col" style="margin-left:24rpx">
+        <view class="u-name">{{user.nickName}} <text class="u-level">👑 {{user.level}}</text></view>
+        <view class="u-phone">{{user.phone}}</view>
+      </view>
+    </view>
+
+    <!-- 余额/积分/优惠券 三栏 -->
+    <view class="wallet card">
+      <view class="wallet-item" data-url="/pages/recharge/recharge" bindtap="onGrid">
+        <view class="w-num">{{user.balance}}</view>
+        <view class="w-label">余额(元)</view>
+      </view>
+      <view class="vline"></view>
+      <view class="wallet-item">
+        <view class="w-num">{{user.points}}</view>
+        <view class="w-label">积分</view>
+      </view>
+      <view class="vline"></view>
+      <view class="wallet-item">
+        <view class="w-num">{{user.coupons}}</view>
+        <view class="w-label">优惠券</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="body">
+    <!-- 我的订单 -->
+    <view class="block card">
+      <view class="block-head row between" data-url="/pages/order/list" bindtap="onGrid">
+        <view class="block-title">我的订单</view>
+        <text class="block-more">全部订单 ›</text>
+      </view>
+      <view class="order-entry">
+        <view class="oe-item" wx:for="{{orderEntry}}" wx:key="id" data-id="{{item.id}}" bindtap="goOrder">
+          <view class="oe-icon">{{item.emoji}}</view>
+          <view class="oe-name">{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 功能宫格 -->
+    <view class="block card">
+      <view class="block-title" style="margin-bottom:10rpx">常用功能</view>
+      <view class="grid">
+        <view class="grid-item" wx:for="{{grids}}" wx:key="id" data-url="{{item.url}}" data-tab="{{item.tab}}" bindtap="onGrid">
+          <view class="grid-icon">{{item.emoji}}</view>
+          <view class="grid-name">{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view style="height:160rpx"></view>
+  </view>
+</view>

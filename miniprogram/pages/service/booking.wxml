@@ -1,0 +1,69 @@
+<!-- 服务预约 -->
+<view class="page">
+  <!-- 服务类型 -->
+  <view class="card sec">
+    <view class="sec-title">选择服务类型</view>
+    <view class="type-list">
+      <view
+        wx:for="{{types}}"
+        wx:key="id"
+        class="type-item {{curType === index ? 'active' : ''}}"
+        data-idx="{{index}}"
+        bindtap="selectType"
+      >
+        <view class="t-emoji">{{item.emoji}}</view>
+        <view class="t-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设备选择 -->
+  <view class="card sec">
+    <view class="row between field">
+      <text class="f-label">选择设备</text>
+      <picker mode="selector" range="{{deviceNames}}" value="{{curDevice}}" bindchange="selectDevice">
+        <view class="f-val">{{deviceNames[curDevice]}} ›</view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 服务地址 -->
+  <view class="card sec" bindtap="chooseAddress">
+    <view class="row between field">
+      <text class="f-label">服务地址</text>
+      <view class="f-val">{{address.region}} ›</view>
+    </view>
+    <view class="addr-detail">{{address.name}} {{address.phone}} · {{address.detail}}</view>
+  </view>
+
+  <!-- 期望上门时间 -->
+  <view class="card sec">
+    <view class="row between field">
+      <text class="f-label">上门日期</text>
+      <picker mode="date" value="{{date}}" start="{{minDate}}" bindchange="onDate">
+        <view class="f-val">{{date}} ›</view>
+      </picker>
+    </view>
+    <view class="slot-list">
+      <view
+        wx:for="{{timeSlots}}"
+        wx:key="*this"
+        class="slot {{curSlot === index ? 'slot-active' : ''}}"
+        data-idx="{{index}}"
+        bindtap="selectSlot"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 问题描述 -->
+  <view class="card sec">
+    <view class="f-label" style="margin-bottom:16rpx">问题描述</view>
+    <textarea class="desc" placeholder="请描述设备问题或特殊需求（选填）" placeholder-class="ph" value="{{desc}}" bindinput="onDesc" maxlength="200"></textarea>
+  </view>
+
+  <view style="height:160rpx"></view>
+
+  <view class="submit-bar">
+    <button class="btn-primary submit-btn" bindtap="submit">提交预约</button>
+  </view>
+</view>

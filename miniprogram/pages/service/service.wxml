@@ -1,0 +1,55 @@
+<!-- 服务 -->
+<view class="page">
+  <view class="header gradient-primary">
+    <view class="h-title">专业上门服务</view>
+    <view class="h-sub">装机 · 拆机 · 迁机 · 返库 · 维修 · 保养</view>
+  </view>
+
+  <!-- 服务类型入口 -->
+  <view class="type-wrap card">
+    <view class="type-item" wx:for="{{serviceTypes}}" wx:key="id" data-type="{{item.id}}" bindtap="goBooking">
+      <view class="type-icon" style="background:{{item.color}}">{{item.emoji}}</view>
+      <view class="type-name">{{item.name}}</view>
+      <view class="type-desc">{{item.desc}}</view>
+    </view>
+  </view>
+
+  <!-- 我的工单 -->
+  <view class="sec-head">
+    <view class="sec-title">📋 我的工单</view>
+  </view>
+
+  <view class="order card" wx:for="{{workOrders}}" wx:key="id" data-id="{{item.id}}" bindtap="goOrderDetail">
+    <view class="row between">
+      <view class="row">
+        <view class="o-emoji" style="background:{{item.color}}">{{item.typeEmoji}}</view>
+        <view class="col" style="margin-left:14rpx">
+          <view class="o-type">{{item.type}}服务</view>
+          <view class="o-id">工单号 {{item.id}}</view>
+        </view>
+      </view>
+      <view class="o-status {{item.status===4?'done':(item.status===0?'wait':'ing')}}">{{item.statusText}}</view>
+    </view>
+
+    <view class="o-info">
+      <view class="o-line">🚰 {{item.device}}</view>
+      <view class="o-line">📍 {{item.address}}</view>
+      <view class="o-line">🕒 期望上门 {{item.time}}</view>
+    </view>
+
+    <!-- 状态时间线（横向迷你） -->
+    <view class="mini-steps">
+      <view class="mini-step {{idx <= item.status ? 'active' : ''}}" wx:for="{{steps}}" wx:for-item="s" wx:for-index="idx" wx:key="*this">
+        <view class="mini-dot"></view>
+        <view class="mini-text">{{s}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:200rpx"></view>
+
+  <!-- 一键预约 -->
+  <view class="bottom-bar">
+    <button class="btn-primary book-btn" data-type="" bindtap="goBooking">＋ 一键预约服务</button>
+  </view>
+</view>

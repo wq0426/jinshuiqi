@@ -1,0 +1,17 @@
+// 主题色彩变量（净水 / 科技风）
+$primary-start: #3A8EF6; // 主色渐变起
+$primary-end: #26C6DA;   // 主色渐变止
+$primary: #3A8EF6;
+
+$success: #52c41a;
+$warning: #faad14;
+$danger: #ff4d4f;
+
+$sidebar-bg: #1f2533;    // 深色侧边栏背景
+$sidebar-bg-light: #2a3142;
+$content-bg: #f5f7fa;    // 内容区浅灰背景
+
+// 主色渐变
+@mixin primary-gradient {
+  background: linear-gradient(135deg, $primary-start 0%, $primary-end 100%);
+}

@@ -1,0 +1,98 @@
+<!-- 设备控制（IoT 物联网） -->
+<view class="page">
+  <!-- 实时状态面板 -->
+  <view class="panel gradient-primary">
+    <view class="row between">
+      <view class="col">
+        <view class="p-name">{{device.name}}</view>
+        <view class="p-state"><text class="dot {{device.online?'online':'offline'}}"></text>{{device.online ? '设备在线' : '设备离线'}} · {{device.room}}</view>
+      </view>
+      <view class="p-emoji">{{device.emoji}}</view>
+    </view>
+
+    <!-- TDS 大数字 + 滤芯环形 -->
+    <view class="p-main">
+      <view class="tds-box">
+        <view class="tds-item">
+          <view class="tds-num">{{device.tdsIn}}</view>
+          <view class="tds-label">进水TDS(ppm)</view>
+        </view>
+        <view class="tds-arrow">→</view>
+        <view class="tds-item">
+          <view class="tds-num good">{{device.tdsOut}}</view>
+          <view class="tds-label">出水TDS(ppm)</view>
+        </view>
+      </view>
+      <view class="ring" style="background: conic-gradient(#fff 0%, rgba(255,255,255,.85) {{minLife}}%, rgba(255,255,255,.25) {{minLife}}%);">
+        <view class="ring-inner">
+          <view class="ring-num">{{minLife}}%</view>
+          <view class="ring-label">滤芯寿命</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="p-water">
+      <view class="pw-item"><text class="pw-num">{{device.todayWater}}L</text><text class="pw-label">今日用水</text></view>
+      <view class="pw-line"></view>
+      <view class="pw-item"><text class="pw-num">{{device.totalWater}}L</text><text class="pw-label">累计用水</text></view>
+    </view>
+  </view>
+
+  <!-- 远程控制开关 -->
+  <view class="card sec">
+    <view class="sec-title">远程控制</view>
+    <view class="ctrl-grid">
+      <!-- 自定义开关：开关机 -->
+      <view class="ctrl-item">
+        <view class="ctrl-icon">⏻</view>
+        <view class="ctrl-name">电源开关</view>
+        <view class="switch {{device.power ? 'switch-on' : ''}}" bindtap="togglePower">
+          <view class="switch-dot"></view>
+        </view>
+      </view>
+      <!-- 一键冲洗 -->
+      <view class="ctrl-item" bindtap="flush">
+        <view class="ctrl-icon">🚿</view>
+        <view class="ctrl-name">一键冲洗</view>
+        <view class="ctrl-btn {{flushing ? 'busy' : ''}}">{{flushing ? '冲洗中' : '启动'}}</view>
+      </view>
+      <!-- 水质检测 -->
+      <view class="ctrl-item" bindtap="detect">
+        <view class="ctrl-icon">🔬</view>
+        <view class="ctrl-name">水质检测</view>
+        <view class="ctrl-btn">检测</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用水量曲线（CSS 柱状图） -->
+  <view class="card sec">
+    <view class="sec-title">近7天用水量 (L)</view>
+    <view class="chart">
+      <view class="bar-col" wx:for="{{chart}}" wx:key="day">
+        <view class="bar-val">{{item.value}}</view>
+        <view class="bar-track">
+          <view class="bar-fill" style="height:{{item.h}}%"></view>
+        </view>
+        <view class="bar-day">{{item.day}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 滤芯列表与寿命 -->
+  <view class="card sec">
+    <view class="sec-title">滤芯状态</view>
+    <view class="filter-item" wx:for="{{device.filters}}" wx:key="name">
+      <view class="row between">
+        <view class="f-name">{{item.name}}</view>
+        <view class="f-life {{item.life < 30 ? 'low' : ''}}">剩余 {{item.life}}% · {{item.days}}天</view>
+      </view>
+      <view class="f-bar">
+        <view class="f-fill {{item.life < 30 ? 'low-fill' : ''}}" style="width:{{item.life}}%"></view>
+      </view>
+      <view class="f-reset" catchtap="resetFilter" data-index="{{index}}">滤芯复位</view>
+    </view>
+  </view>
+
+  <view style="height:40rpx"></view>
+</view>

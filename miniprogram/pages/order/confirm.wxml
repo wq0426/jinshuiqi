@@ -1,0 +1,66 @@
+<!-- 确认订单 -->
+<view class="page">
+  <!-- 收货地址 -->
+  <view class="addr card" bindtap="chooseAddress">
+    <view class="addr-icon">📍</view>
+    <view class="addr-body">
+      <view class="row">
+        <text class="addr-name">{{address.name}}</text>
+        <text class="addr-phone">{{address.phone}}</text>
+        <text class="tag tag-blue addr-tag">{{address.tag}}</text>
+      </view>
+      <view class="addr-detail">{{address.region}} {{address.detail}}</view>
+    </view>
+    <view class="addr-arrow">›</view>
+  </view>
+
+  <!-- 商品清单 -->
+  <view class="card sec">
+    <view class="sec-title">商品清单</view>
+    <view class="g-item" wx:for="{{items}}" wx:key="key">
+      <view class="g-img img-ph" style="background:{{item.color}}">{{item.emoji}}</view>
+      <view class="g-body">
+        <view class="g-title ellipsis-2">{{item.title}}</view>
+        <view class="g-spec">{{item.spec}}</view>
+      </view>
+      <view class="g-right">
+        <view class="price"><text class="price-symbol">¥</text>{{item.price}}</view>
+        <view class="g-count">×{{item.count}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 配送/安装方式 -->
+  <view class="card sec">
+    <view class="row between">
+      <text class="row-label">配送 / 安装</text>
+      <picker mode="selector" range="{{deliverWays}}" value="{{deliverIdx}}" bindchange="selectDeliver">
+        <view class="picker-val">{{deliverWays[deliverIdx]}} ›</view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="card sec">
+    <view class="row-label" style="margin-bottom:14rpx">订单备注</view>
+    <input class="remark" placeholder="选填，如期望安装时间等" placeholder-class="ph" value="{{remark}}" bindinput="onRemark" />
+  </view>
+
+  <!-- 金额明细 -->
+  <view class="card sec">
+    <view class="amt-row"><text>商品金额</text><text class="amt-val">¥{{goodsTotal}}</text></view>
+    <view class="amt-row"><text>运费</text><text class="amt-val">¥{{freight}}</text></view>
+    <view class="amt-row"><text>安装服务</text><text class="amt-free">免费</text></view>
+  </view>
+
+  <view style="height:160rpx"></view>
+
+  <!-- 提交栏 -->
+  <view class="submit-bar">
+    <view class="pay-box">
+      <text class="pay-label">实付：</text>
+      <text class="price pay-price"><text class="price-symbol">¥</text>{{payTotal}}</text>
+    </view>
+    <button class="btn-primary submit-btn" bindtap="submit">提交订单</button>
+  </view>
+</view>

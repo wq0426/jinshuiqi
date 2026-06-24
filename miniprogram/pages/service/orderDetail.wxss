@@ -1,0 +1,63 @@
+.page { min-height: 100vh; padding-bottom: 30rpx; }
+
+.head { padding: 40rpx; }
+.h-type { color: rgba(255,255,255,.9); font-size: 26rpx; }
+.h-status { color: #fff; font-size: 44rpx; font-weight: 700; margin: 14rpx 0; }
+.h-id { color: rgba(255,255,255,.85); font-size: 23rpx; }
+
+.master { display: flex; align-items: center; padding: 26rpx; margin: -30rpx 24rpx 22rpx; }
+.m-avatar {
+  width: 96rpx; height: 96rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#56ccf2,#6fe3c7);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 50rpx;
+}
+.m-avatar.gray { background: #eef1f6; }
+.m-body { flex: 1; margin-left: 20rpx; }
+.m-name { font-size: 30rpx; font-weight: 700; }
+.m-rating { font-size: 24rpx; color: #ff9f43; margin-left: 16rpx; }
+.m-jobs { font-size: 23rpx; color: #9aa4b2; margin-top: 10rpx; }
+.m-call {
+  font-size: 25rpx;
+  color: #fff;
+  background: linear-gradient(135deg,#3A8EF6,#26C6DA);
+  padding: 14rpx 28rpx;
+  border-radius: 999rpx;
+  font-weight: 600;
+}
+
+.sec { padding: 28rpx; margin: 0 24rpx 22rpx; }
+.sec-title { font-size: 30rpx; font-weight: 700; margin-bottom: 24rpx; }
+
+/* 时间线 */
+.timeline { padding-left: 8rpx; }
+.tl-item { display: flex; position: relative; padding-bottom: 36rpx; }
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: 11rpx; top: 22rpx;
+  width: 2rpx; height: 100%;
+  background: #e6eaf0;
+}
+.tl-item:last-child::before { display: none; }
+.tl-dot {
+  width: 24rpx; height: 24rpx;
+  border-radius: 50%;
+  background: #e6eaf0;
+  flex-shrink: 0; margin-top: 4rpx; z-index: 1;
+}
+.tl-item.done .tl-dot { background: linear-gradient(135deg,#3A8EF6,#26C6DA); box-shadow: 0 0 0 5rpx rgba(58,142,246,.16); }
+.tl-item.done::before { background: #3A8EF6; }
+.tl-body { margin-left: 22rpx; }
+.tl-text { font-size: 27rpx; color: #b4bccc; }
+.tl-item.done .tl-text { color: #1f2430; font-weight: 600; }
+.tl-time { font-size: 22rpx; color: #9aa4b2; margin-top: 8rpx; }
+
+.info-row { display: flex; justify-content: space-between; font-size: 26rpx; line-height: 56rpx; }
+.i-label { color: #8a94a6; flex-shrink: 0; }
+.i-val { color: #1f2430; text-align: right; }
+.i-val.addr { max-width: 440rpx; }
+.info-row.total { border-top: 1rpx solid #eef1f6; margin-top: 10rpx; padding-top: 10rpx; }
+.i-total { font-size: 36rpx; }
+.fee-tip { font-size: 23rpx; color: #2dd0a0; margin-top: 12rpx; }

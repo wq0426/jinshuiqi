@@ -1,0 +1,94 @@
+<!-- 分销中心（链动2+1） -->
+<view class="page">
+  <!-- 等级头卡 -->
+  <view class="head">
+    <view class="level-card">
+      <view class="row between">
+        <view class="col">
+          <view class="lv-name">👑 {{dist.level}}</view>
+          <view class="lv-desc">{{dist.levelDesc}}</view>
+        </view>
+        <view class="invite-btn" bindtap="invite">邀请海报</view>
+      </view>
+      <view class="comm-row">
+        <view class="comm-item">
+          <view class="c-num">{{dist.totalCommission}}</view>
+          <view class="c-label">累计佣金(元)</view>
+        </view>
+        <view class="comm-item">
+          <view class="c-num">{{dist.withdrawable}}</view>
+          <view class="c-label">可提现(元)</view>
+        </view>
+        <view class="comm-item">
+          <view class="c-num">{{dist.teamCount}}</view>
+          <view class="c-label">团队人数</view>
+        </view>
+      </view>
+      <button class="withdraw-btn" bindtap="withdraw">立即提现</button>
+    </view>
+  </view>
+
+  <!-- 数据小卡 -->
+  <view class="mini-cards">
+    <view class="mini card">
+      <view class="mc-num">¥{{dist.todayIncome}}</view>
+      <view class="mc-label">今日收益</view>
+    </view>
+    <view class="mini card">
+      <view class="mc-num">{{dist.directCount}}</view>
+      <view class="mc-label">直推人数</view>
+    </view>
+    <view class="mini card">
+      <view class="mc-num">{{dist.indirectCount}}</view>
+      <view class="mc-label">间推人数</view>
+    </view>
+  </view>
+
+  <!-- 等级权益 -->
+  <view class="card sec">
+    <view class="sec-title">📈 等级权益（链动2+1）</view>
+    <view class="lv-item" wx:for="{{dist.levels}}" wx:key="name">
+      <view class="lv-emoji">{{item.emoji}}</view>
+      <view class="lv-info">
+        <view class="lv-t">{{item.name}}</view>
+        <view class="lv-c">{{item.cond}}</view>
+      </view>
+      <view class="lv-rate">{{item.rate}}</view>
+    </view>
+  </view>
+
+  <!-- 收益明细 -->
+  <view class="card sec">
+    <view class="sec-title">💰 收益明细</view>
+    <view class="income-item" wx:for="{{dist.incomeList}}" wx:key="id">
+      <view class="ii-body">
+        <view class="ii-name">{{item.name}}</view>
+        <view class="ii-meta"><text class="tag tag-blue">{{item.type}}</text><text class="ii-time">{{item.time}}</text></view>
+      </view>
+      <view class="ii-amount">+{{item.amount}}</view>
+    </view>
+  </view>
+
+  <!-- 我的团队 -->
+  <view class="card sec">
+    <view class="sec-title">👥 我的团队</view>
+    <view class="team-tab">
+      <view class="tt {{teamTab==='direct'?'active':''}}" data-type="direct" bindtap="switchTeam">直推（{{dist.directCount}}）</view>
+      <view class="tt {{teamTab==='indirect'?'active':''}}" data-type="indirect" bindtap="switchTeam">间推（{{dist.indirectCount}}）</view>
+    </view>
+    <view class="member" wx:for="{{teamList}}" wx:key="id">
+      <view class="mb-avatar">{{item.avatar}}</view>
+      <view class="mb-body">
+        <view class="row"><text class="mb-name">{{item.name}}</text><text class="tag tag-orange mb-lv">{{item.level}}</text></view>
+        <view class="mb-time">加入时间 {{item.time}}</view>
+      </view>
+      <view class="mb-contrib">
+        <view class="mb-c-num">¥{{item.contribution}}</view>
+        <view class="mb-c-label">贡献业绩</view>
+      </view>
+    </view>
+    <view wx:if="{{teamList.length===0}}" class="team-empty">暂无成员</view>
+  </view>
+
+  <view style="height:40rpx"></view>
+</view>

@@ -1,0 +1,35 @@
+/* 设置页 */
+.group { padding: 0 24rpx; }
+
+.cell {
+  padding: 30rpx 8rpx;
+  border-bottom: 1rpx solid #f0f2f5;
+}
+.cell:last-child { border-bottom: none; }
+
+.cell-left { display: flex; align-items: center; }
+.cell-icon { font-size: 38rpx; margin-right: 20rpx; }
+.cell-name { font-size: 30rpx; color: #333; }
+
+.cell-right { display: flex; align-items: center; }
+.cell-extra { font-size: 26rpx; color: #999; margin-right: 8rpx; }
+.cell-arrow { font-size: 34rpx; color: #c4c8cf; }
+
+.logout-btn {
+  margin: 48rpx 0 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  text-align: center;
+  padding: 28rpx 0;
+  font-size: 30rpx;
+  color: #f5544a;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.04);
+}
+.logout-btn:active { background: #fafafa; }
+
+.ver {
+  text-align: center;
+  font-size: 24rpx;
+  color: #b5bbc4;
+  margin-top: 16rpx;
+}

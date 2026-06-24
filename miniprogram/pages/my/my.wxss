@@ -1,0 +1,60 @@
+.page { min-height: 100vh; }
+
+.header {
+  padding: 0 32rpx 90rpx;
+  border-radius: 0 0 36rpx 36rpx;
+}
+.user-row { display: flex; align-items: center; margin-top: 20rpx; }
+.avatar {
+  width: 110rpx; height: 110rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,.25);
+  border: 4rpx solid rgba(255,255,255,.6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 56rpx;
+}
+.u-name { color: #fff; font-size: 36rpx; font-weight: 700; }
+.u-level {
+  font-size: 22rpx;
+  font-weight: 500;
+  background: rgba(255,255,255,.22);
+  padding: 4rpx 14rpx;
+  border-radius: 999rpx;
+  margin-left: 10rpx;
+}
+.u-phone { color: rgba(255,255,255,.85); font-size: 24rpx; margin-top: 10rpx; }
+.setting { margin-left: auto; font-size: 40rpx; }
+
+.wallet {
+  margin-top: 30rpx;
+  padding: 30rpx 0;
+  display: flex;
+}
+.wallet-item { flex: 1; text-align: center; }
+.w-num { font-size: 38rpx; font-weight: 700; color: #1f2430; }
+.w-label { font-size: 22rpx; color: #8a94a6; margin-top: 8rpx; }
+.vline { width: 1rpx; background: #eef1f6; margin: 6rpx 0; }
+
+.body { padding: 24rpx; margin-top: -50rpx; }
+
+.block {
+  padding: 26rpx;
+  margin-bottom: 24rpx;
+}
+.block-head { margin-bottom: 24rpx; }
+.block-title { font-size: 30rpx; font-weight: 700; }
+.block-more { font-size: 24rpx; color: #8a94a6; }
+
+.order-entry { display: flex; }
+.oe-item { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.oe-icon { font-size: 46rpx; }
+.oe-name { font-size: 24rpx; color: #4a5568; margin-top: 12rpx; }
+
+.grid { display: flex; flex-wrap: wrap; }
+.grid-item {
+  width: 25%;
+  display: flex; flex-direction: column; align-items: center;
+  margin-top: 28rpx;
+}
+.grid-icon { font-size: 46rpx; }
+.grid-name { font-size: 24rpx; color: #4a5568; margin-top: 12rpx; }

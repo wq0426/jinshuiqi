@@ -1,0 +1,52 @@
+.page { min-height: 100vh; padding: 24rpx; }
+
+.dev { padding: 28rpx; margin-bottom: 24rpx; }
+.dev-emoji {
+  width: 84rpx; height: 84rpx;
+  border-radius: 22rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 42rpx;
+}
+.dev-name { font-size: 31rpx; font-weight: 700; }
+.dev-sub { font-size: 23rpx; color: #9aa4b2; margin-top: 8rpx; }
+.dev-state { font-size: 24rpx; display: flex; align-items: center; font-weight: 600; }
+.dev-state.on { color: #2dd0a0; }
+.dev-state.off { color: #b4bccc; }
+.dot { width: 12rpx; height: 12rpx; border-radius: 50%; margin-right: 8rpx; }
+.dot.online { background: #2dd0a0; box-shadow: 0 0 0 4rpx rgba(45,208,160,.18); }
+.dot.offline { background: #cbd2dc; }
+
+.dev-body { display: flex; align-items: center; margin: 30rpx 0; }
+
+/* 环形进度 */
+.ring {
+  width: 150rpx; height: 150rpx;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ring-inner {
+  width: 110rpx; height: 110rpx;
+  background: #fff;
+  border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.ring-num { font-size: 32rpx; font-weight: 700; color: #3A8EF6; }
+.ring-label { font-size: 20rpx; color: #9aa4b2; margin-top: 2rpx; }
+
+.dev-metrics { flex: 1; display: flex; margin-left: 20rpx; }
+.metric { flex: 1; text-align: center; }
+.m-num { font-size: 34rpx; font-weight: 700; }
+.unit { font-size: 20rpx; color: #9aa4b2; font-weight: 400; margin-left: 2rpx; }
+.m-label { font-size: 21rpx; color: #9aa4b2; margin-top: 8rpx; }
+
+.dev-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 22rpx;
+  border-top: 1rpx solid #eef1f6;
+}
+.foot-text { font-size: 23rpx; color: #b4bccc; }
+.foot-arrow { font-size: 25rpx; color: #3A8EF6; font-weight: 600; }

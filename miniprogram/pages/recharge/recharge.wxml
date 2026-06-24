@@ -1,0 +1,48 @@
+<!-- 充值 -->
+<view class="page">
+  <!-- 余额卡 -->
+  <view class="balance-card gradient-primary">
+    <view class="b-label">账户余额(元)</view>
+    <view class="b-num">{{balance}}</view>
+    <view class="b-tip">💧 余额可用于商品购买、服务支付</view>
+  </view>
+
+  <!-- 充值套餐 -->
+  <view class="card sec">
+    <view class="sec-title">选择充值金额</view>
+    <view class="pkg-grid">
+      <view
+        wx:for="{{packages}}"
+        wx:key="id"
+        class="pkg {{curPkg === index ? 'active' : ''}}"
+        data-idx="{{index}}"
+        bindtap="selectPkg"
+      >
+        <view wx:if="{{item.hot}}" class="hot">热门</view>
+        <view class="pkg-amount">¥{{item.amount}}</view>
+        <view class="pkg-gift" wx:if="{{item.gift > 0}}">{{item.label}}</view>
+        <view class="pkg-gift none" wx:else>无赠送</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 支付方式 -->
+  <view class="card sec">
+    <view class="sec-title">支付方式</view>
+    <view class="pay-item" wx:for="{{payways}}" wx:key="id" data-id="{{item.id}}" bindtap="selectPay">
+      <text class="pay-emoji">{{item.emoji}}</text>
+      <text class="pay-name">{{item.name}}</text>
+      <view class="radio {{curPay === item.id ? 'radio-on' : ''}}"></view>
+    </view>
+  </view>
+
+  <view style="height:160rpx"></view>
+
+  <view class="bar">
+    <view class="bar-info">
+      实付 <text class="price bar-price">¥{{packages[curPkg].amount}}</text>
+      <text class="bar-gift" wx:if="{{packages[curPkg].gift > 0}}">送 {{packages[curPkg].gift}} 元</text>
+    </view>
+    <button class="btn-primary bar-btn" bindtap="recharge">确认充值</button>
+  </view>
+</view>

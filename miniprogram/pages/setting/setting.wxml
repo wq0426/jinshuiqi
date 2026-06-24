@@ -1,0 +1,21 @@
+<!-- 设置 -->
+<view class="page page-pad">
+  <!-- 设置项分组 -->
+  <view class="card group">
+    <view class="cell row between" wx:for="{{items}}" wx:key="id" data-id="{{item.id}}" bindtap="onTap">
+      <view class="cell-left">
+        <text class="cell-icon">{{item.emoji}}</text>
+        <text class="cell-name">{{item.name}}</text>
+      </view>
+      <view class="cell-right">
+        <text class="cell-extra">{{item.extra}}</text>
+        <text class="cell-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-btn" bindtap="onLogout">退出登录</view>
+
+  <view class="ver">版本 v{{version}}</view>
+</view>

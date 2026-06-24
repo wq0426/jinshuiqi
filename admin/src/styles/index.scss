@@ -1,0 +1,98 @@
+@use './variables.scss' as *;
+
+// 全局重置
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: $content-bg;
+  color: #303133;
+  -webkit-font-smoothing: antialiased;
+}
+
+// 滚动条美化
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(144, 147, 153, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(144, 147, 153, 0.5);
+}
+
+// 通用卡片
+.app-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+// 页面容器
+.page-container {
+  padding: 16px;
+}
+
+// 主色渐变文字
+.gradient-text {
+  background: linear-gradient(135deg, #3a8ef6 0%, #26c6da 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// 搜索栏卡片
+.filter-bar {
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px 20px 4px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+}
+
+// 渐变按钮
+.el-button--primary {
+  --el-button-bg-color: #3a8ef6;
+  --el-button-border-color: #3a8ef6;
+  --el-button-hover-bg-color: #5aa0f8;
+  --el-button-hover-border-color: #5aa0f8;
+}
+
+// 表格圆角容器
+.table-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+}
+
+// 分页右对齐
+.pagination-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+// 页面进入动画
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

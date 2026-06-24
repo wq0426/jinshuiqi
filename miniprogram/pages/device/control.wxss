@@ -1,0 +1,128 @@
+.page { min-height: 100vh; padding: 24rpx; }
+
+/* 状态面板 */
+.panel { border-radius: 24rpx; padding: 30rpx; box-shadow: 0 10rpx 30rpx rgba(58,142,246,.25); }
+.p-name { color: #fff; font-size: 34rpx; font-weight: 700; }
+.p-state { color: rgba(255,255,255,.9); font-size: 23rpx; margin-top: 12rpx; display: flex; align-items: center; }
+.dot { width: 12rpx; height: 12rpx; border-radius: 50%; margin-right: 8rpx; }
+.dot.online { background: #aef5dc; }
+.dot.offline { background: rgba(255,255,255,.5); }
+.p-emoji { font-size: 80rpx; }
+
+.p-main { display: flex; align-items: center; justify-content: space-between; margin: 36rpx 0 30rpx; }
+.tds-box { display: flex; align-items: center; }
+.tds-item { text-align: center; }
+.tds-num { color: #fff; font-size: 56rpx; font-weight: 700; }
+.tds-num.good { color: #aef5dc; }
+.tds-label { color: rgba(255,255,255,.85); font-size: 20rpx; margin-top: 6rpx; }
+.tds-arrow { color: rgba(255,255,255,.7); font-size: 40rpx; margin: 0 24rpx; }
+
+.ring {
+  width: 140rpx; height: 140rpx;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ring-inner {
+  width: 104rpx; height: 104rpx;
+  background: #3A8EF6;
+  border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.ring-num { color: #fff; font-size: 32rpx; font-weight: 700; }
+.ring-label { color: rgba(255,255,255,.85); font-size: 18rpx; margin-top: 2rpx; }
+
+.p-water {
+  display: flex;
+  background: rgba(255,255,255,.18);
+  border-radius: 16rpx;
+  padding: 20rpx 0;
+}
+.pw-item { flex: 1; text-align: center; display: flex; flex-direction: column; }
+.pw-num { color: #fff; font-size: 32rpx; font-weight: 700; }
+.pw-label { color: rgba(255,255,255,.85); font-size: 21rpx; margin-top: 6rpx; }
+.pw-line { width: 1rpx; background: rgba(255,255,255,.3); }
+
+/* section */
+.sec { margin-top: 24rpx; padding: 28rpx; }
+.sec-title { font-size: 30rpx; font-weight: 700; margin-bottom: 24rpx; }
+
+/* 控制 */
+.ctrl-grid { display: flex; }
+.ctrl-item {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 10rpx 0;
+}
+.ctrl-icon {
+  width: 90rpx; height: 90rpx;
+  border-radius: 50%;
+  background: rgba(58,142,246,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44rpx;
+}
+.ctrl-name { font-size: 24rpx; color: #4a5568; margin: 16rpx 0; }
+
+/* 自定义 switch */
+.switch {
+  width: 88rpx; height: 48rpx;
+  border-radius: 999rpx;
+  background: #d8e0ea;
+  position: relative;
+  transition: background .25s;
+}
+.switch-on { background: linear-gradient(135deg,#3A8EF6,#26C6DA); }
+.switch-dot {
+  position: absolute;
+  top: 4rpx; left: 4rpx;
+  width: 40rpx; height: 40rpx;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,.2);
+  transition: transform .25s;
+}
+.switch-on .switch-dot { transform: translateX(40rpx); }
+
+.ctrl-btn {
+  font-size: 24rpx;
+  color: #3A8EF6;
+  background: rgba(58,142,246,.1);
+  padding: 8rpx 28rpx;
+  border-radius: 999rpx;
+  font-weight: 600;
+}
+.ctrl-btn.busy { color: #ff9f43; background: rgba(255,159,67,.12); }
+
+/* 柱状图 */
+.chart { display: flex; align-items: flex-end; height: 280rpx; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+.bar-val { font-size: 20rpx; color: #8a94a6; margin-bottom: 8rpx; }
+.bar-track { width: 100%; flex: 1; display: flex; align-items: flex-end; justify-content: center; }
+.bar-fill {
+  width: 36rpx;
+  background: linear-gradient(180deg,#26C6DA,#3A8EF6);
+  border-radius: 8rpx 8rpx 0 0;
+  min-height: 8rpx;
+}
+.bar-day { font-size: 20rpx; color: #9aa4b2; margin-top: 12rpx; }
+
+/* 滤芯 */
+.filter-item { padding: 18rpx 0; border-bottom: 1rpx solid #f3f5f8; position: relative; }
+.filter-item:last-child { border-bottom: none; }
+.f-name { font-size: 27rpx; font-weight: 600; }
+.f-life { font-size: 22rpx; color: #8a94a6; }
+.f-life.low { color: #ff5b5b; }
+.f-bar { height: 12rpx; background: #eef1f6; border-radius: 999rpx; margin-top: 14rpx; overflow: hidden; }
+.f-fill { height: 100%; background: linear-gradient(90deg,#3A8EF6,#26C6DA); border-radius: 999rpx; }
+.f-fill.low-fill { background: linear-gradient(90deg,#ff7a7a,#ff5b5b); }
+.f-reset {
+  position: absolute;
+  right: 0; bottom: 18rpx;
+  font-size: 22rpx;
+  color: #3A8EF6;
+  border: 2rpx solid #3A8EF6;
+  padding: 4rpx 18rpx;
+  border-radius: 999rpx;
+  background: #fff;
+}

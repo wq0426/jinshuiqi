@@ -1,0 +1,49 @@
+<!-- 我的设备 -->
+<view class="page">
+  <view class="dev card" wx:for="{{devices}}" wx:key="id" data-id="{{item.id}}" bindtap="goControl">
+    <view class="row between">
+      <view class="row">
+        <view class="dev-emoji" style="background:{{item.color}}">{{item.emoji}}</view>
+        <view class="col" style="margin-left:16rpx">
+          <view class="dev-name">{{item.name}}</view>
+          <view class="dev-sub">{{item.room}} · {{item.id}}</view>
+        </view>
+      </view>
+      <view class="dev-state {{item.online ? 'on' : 'off'}}">
+        <text class="dot {{item.online ? 'online' : 'offline'}}"></text>{{item.online ? '在线' : '离线'}}
+      </view>
+    </view>
+
+    <view class="dev-body">
+      <!-- 滤芯寿命环形 -->
+      <view class="ring" style="background: conic-gradient(#3A8EF6 0%, #26C6DA {{item.minLife}}%, #eef1f6 {{item.minLife}}%);">
+        <view class="ring-inner">
+          <view class="ring-num">{{item.minLife}}%</view>
+          <view class="ring-label">滤芯</view>
+        </view>
+      </view>
+
+      <view class="dev-metrics">
+        <view class="metric">
+          <view class="m-num">{{item.tdsOut}}<text class="unit">ppm</text></view>
+          <view class="m-label">出水TDS</view>
+        </view>
+        <view class="metric">
+          <view class="m-num">{{item.tdsIn}}<text class="unit">ppm</text></view>
+          <view class="m-label">进水TDS</view>
+        </view>
+        <view class="metric">
+          <view class="m-num">{{item.totalWater}}<text class="unit">L</text></view>
+          <view class="m-label">累计净水</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="dev-foot">
+      <text class="foot-text">点击进入设备控制</text>
+      <text class="foot-arrow">远程控制 ›</text>
+    </view>
+  </view>
+
+  <view style="height:40rpx"></view>
+</view>

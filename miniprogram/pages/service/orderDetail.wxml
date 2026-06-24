@@ -1,0 +1,58 @@
+<!-- 工单详情 -->
+<view class="page">
+  <!-- 状态头 -->
+  <view class="head gradient-primary">
+    <view class="h-type">{{order.type}}服务</view>
+    <view class="h-status">{{order.statusText}}</view>
+    <view class="h-id">工单号 {{order.id}}</view>
+  </view>
+
+  <!-- 师傅信息 -->
+  <view class="card master" wx:if="{{order.master}}">
+    <view class="m-avatar">👨‍🔧</view>
+    <view class="m-body">
+      <view class="row">
+        <text class="m-name">{{order.master.name}}</text>
+        <text class="m-rating">⭐ {{order.master.rating}}</text>
+      </view>
+      <view class="m-jobs">已服务 {{order.master.jobs}} 单 · 金牌师傅</view>
+    </view>
+    <view class="m-call" bindtap="callMaster">📞 联系</view>
+  </view>
+  <view class="card master no-master" wx:else>
+    <view class="m-avatar gray">⏳</view>
+    <view class="m-body"><view class="m-name">等待派单中...</view><view class="m-jobs">系统正在为您匹配附近金牌师傅</view></view>
+  </view>
+
+  <!-- 状态时间线 -->
+  <view class="card sec">
+    <view class="sec-title">服务进度</view>
+    <view class="timeline">
+      <view class="tl-item {{item.done ? 'done' : ''}}" wx:for="{{order.timeline}}" wx:key="text">
+        <view class="tl-dot"></view>
+        <view class="tl-body">
+          <view class="tl-text">{{item.text}}</view>
+          <view class="tl-time" wx:if="{{item.time}}">{{item.time}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务内容 -->
+  <view class="card sec">
+    <view class="sec-title">服务信息</view>
+    <view class="info-row"><text class="i-label">服务类型</text><text class="i-val">{{order.typeEmoji}} {{order.type}}</text></view>
+    <view class="info-row"><text class="i-label">关联设备</text><text class="i-val">{{order.device}}</text></view>
+    <view class="info-row"><text class="i-label">期望时间</text><text class="i-val">{{order.time}}</text></view>
+    <view class="info-row"><text class="i-label">服务地址</text><text class="i-val addr">{{order.address}}</text></view>
+  </view>
+
+  <!-- 费用 -->
+  <view class="card sec">
+    <view class="info-row"><text class="i-label">上门费</text><text class="i-val">¥{{order.fee}}.00</text></view>
+    <view class="info-row total"><text class="i-label">合计费用</text><text class="price i-total">¥{{order.fee}}.00</text></view>
+    <view class="fee-tip" wx:if="{{order.fee===0}}">✅ 保修期内，本次服务免费</view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>
